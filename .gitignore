@@ -213,3 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+gen/ru/serjik/engine/BuildConfig.java
+project.properties

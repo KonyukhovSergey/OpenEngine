@@ -1,28 +1,33 @@
 package ru.engine.test;
 
-import ru.serjik.engine.R;
-import ru.serjik.engine.R.layout;
-import ru.serjik.engine.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 
 public class MainActivity extends Activity
 {
+	private TestView tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		tv = new TestView(this);
+		setContentView(tv);
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
+	protected void onResume()
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+
+		super.onResume();
+		tv.onResume();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		tv.onPause();
 	}
 
 }

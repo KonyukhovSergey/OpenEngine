@@ -16,6 +16,19 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 
 	private FrameRateCalculator frameRateCalculator;
 
+	private int width;
+	private int height;
+
+	public int width()
+	{
+		return width;
+	}
+
+	public int height()
+	{
+		return height;
+	}
+
 	public EngineView(Context context)
 	{
 		super(context);
@@ -32,7 +45,7 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 
 	public abstract void onChanged();
 
-	public abstract void onDrawFrame();
+	public abstract void onDrawFrame(GL10 gl);
 
 	private void init()
 	{
@@ -53,13 +66,15 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		public void onDrawFrame(GL10 gl)
 		{
 			frameRateCalculator.frameBegin();
-			EngineView.this.onDrawFrame();
+			EngineView.this.onDrawFrame(gl);
 			frameRateCalculator.frameDone();
 		}
 
 		@Override
 		public void onSurfaceChanged(GL10 gl, int width, int height)
 		{
+			EngineView.this.width = width;
+			EngineView.this.height = height;
 			onChanged();
 		}
 

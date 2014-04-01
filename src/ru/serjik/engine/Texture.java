@@ -10,6 +10,8 @@ public class Texture
 	private static int current = 0;
 
 	private int id;
+	private int width;
+	private int height;
 
 	public Texture(Bitmap bitmap)
 	{
@@ -18,8 +20,20 @@ public class Texture
 		bind();
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		width = bitmap.getWidth();
+		height = bitmap.getHeight();
 
 		unbind();
+	}
+
+	public int width()
+	{
+		return width;
+	}
+
+	public int height()
+	{
+		return height;
 	}
 
 	public static void disable()
