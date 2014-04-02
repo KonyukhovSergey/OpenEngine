@@ -2,9 +2,8 @@ package ru.engine.test;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
 import ru.serjik.engine.EngineView;
-import ru.serjik.engine.eng;
+import android.content.Context;
 
 public class TestView extends EngineView
 {

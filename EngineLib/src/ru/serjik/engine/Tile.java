@@ -14,6 +14,7 @@ public class Tile
 	public Tile(Texture texture)
 	{
 		this.texture = texture;
+		set(0, 0, 1, 1);
 	}
 
 	public Tile(Texture texture, int x, int y, int width, int height)
