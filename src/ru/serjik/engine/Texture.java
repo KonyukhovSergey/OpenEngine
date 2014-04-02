@@ -10,8 +10,8 @@ public class Texture
 	private static int current = 0;
 
 	private int id;
-	private int width;
-	private int height;
+	public int width;
+	public int height;
 
 	public Texture(Bitmap bitmap)
 	{
@@ -24,16 +24,6 @@ public class Texture
 		height = bitmap.getHeight();
 
 		unbind();
-	}
-
-	public int width()
-	{
-		return width;
-	}
-
-	public int height()
-	{
-		return height;
 	}
 
 	public static void disable()

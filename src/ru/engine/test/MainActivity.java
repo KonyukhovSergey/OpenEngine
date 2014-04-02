@@ -1,18 +1,19 @@
 package ru.engine.test;
 
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.app.Activity;
 
 public class MainActivity extends Activity
 {
-	private TestView tv;
+	private GLSurfaceView surfaceView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		tv = new TestView(this);
-		setContentView(tv);
+		surfaceView = new TestView(this);
+		setContentView(surfaceView);
 	}
 
 	@Override
@@ -20,14 +21,14 @@ public class MainActivity extends Activity
 	{
 
 		super.onResume();
-		tv.onResume();
+		surfaceView.onResume();
 	}
 
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
-		tv.onPause();
+		surfaceView.onPause();
 	}
 
 }
