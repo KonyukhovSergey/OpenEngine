@@ -1,8 +1,8 @@
 package ru.engine.test;
 
+import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.app.Activity;
 
 public class MainActivity extends Activity
 {
@@ -14,6 +14,8 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		surfaceView = new TestView(this);
 		setContentView(surfaceView);
+		
+		
 	}
 
 	@Override

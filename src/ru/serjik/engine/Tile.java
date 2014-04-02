@@ -6,6 +6,11 @@ public class Tile
 	public float u1, v1, u2, v2;
 	public int width, height;
 
+	public Tile()
+	{
+
+	}
+
 	public Tile(Texture texture)
 	{
 		this.texture = texture;
