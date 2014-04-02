@@ -213,6 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-BuildConfig.java
-.properties
-proguard-project.txt
+gen/ru/serjik/engine/BuildConfig.java
+project.properties
