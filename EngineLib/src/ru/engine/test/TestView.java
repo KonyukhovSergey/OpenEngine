@@ -2,16 +2,22 @@ package ru.engine.test;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import ru.serjik.engine.BatchDrawer;
 import ru.serjik.engine.EngineView;
+import ru.serjik.engine.Sprite;
+import ru.serjik.engine.Texture;
 import android.content.Context;
 
 public class TestView extends EngineView
 {
+	Sprite bob;
 
 	public TestView(Context context)
 	{
 		super(context);
-		// TODO Auto-generated constructor stub
+
+
+
 	}
 
 	@Override
@@ -33,6 +39,8 @@ public class TestView extends EngineView
 	{
 		gl.glClearColor(1, 0, 0, 0.5f);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+
 	}
 
 }

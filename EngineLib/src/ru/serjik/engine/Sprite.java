@@ -1,8 +1,7 @@
 package ru.serjik.engine;
 
-public class Sprite
+public class Sprite extends Tile
 {
-	public Tile tile;
 	public float originX, originY;
 
 }
