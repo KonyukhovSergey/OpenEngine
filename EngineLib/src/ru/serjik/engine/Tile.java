@@ -115,8 +115,8 @@ public class Tile
 		int x = Math.round(u1 * texture.width);
 		int y = Math.round(v1 * texture.height);
 
-		int rows = height / tileHeight;
-		int cols = width / tileWidth;
+		int rows = texture.height / tileHeight;
+		int cols = texture.width / tileWidth;
 
 		Tile[] tiles = new Tile[rows * cols];
 

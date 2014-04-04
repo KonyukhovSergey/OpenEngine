@@ -55,6 +55,11 @@ public class BatchDrawer
 		{
 			flush();
 			this.texture = texture;
+			
+			if(texture!=null)
+			{
+				texture.bind();
+			}
 		}
 	}
 
@@ -123,38 +128,23 @@ public class BatchDrawer
 		texture(texture);
 		color(true);
 
-		data[size] = x1;
-		size++;
-		data[size] = y1;
-		size++;
-		data[size] = u1;
-		size++;
-		data[size] = v1;
-		size++;
-		data[size] = c1;
-		size++;
+		data[size++] = x1;
+		data[size++] = y1;
+		data[size++] = u1;
+		data[size++] = v1;
+		data[size++] = c1;
 
-		data[size] = x2;
-		size++;
-		data[size] = y2;
-		size++;
-		data[size] = u2;
-		size++;
-		data[size] = v2;
-		size++;
-		data[size] = c2;
-		size++;
+		data[size++] = x2;
+		data[size++] = y2;
+		data[size++] = u2;
+		data[size++] = v2;
+		data[size++] = c2;
 
-		data[size] = x3;
-		size++;
-		data[size] = y3;
-		size++;
-		data[size] = u3;
-		size++;
-		data[size] = v3;
-		size++;
-		data[size] = c3;
-		size++;
+		data[size++] = x3;
+		data[size++] = y3;
+		data[size++] = u3;
+		data[size++] = v3;
+		data[size++] = c3;
 	}
 
 	public void draw(Texture texture, float c, float x1, float y1, float u1, float v1, float x2, float y2, float u2,
@@ -168,38 +158,23 @@ public class BatchDrawer
 		texture(texture);
 		color(true);
 
-		data[size] = x1;
-		size++;
-		data[size] = y1;
-		size++;
-		data[size] = u1;
-		size++;
-		data[size] = v1;
-		size++;
-		data[size] = c;
-		size++;
+		data[size++] = x1;
+		data[size++] = y1;
+		data[size++] = u1;
+		data[size++] = v1;
+		data[size++] = c;
 
-		data[size] = x2;
-		size++;
-		data[size] = y2;
-		size++;
-		data[size] = u2;
-		size++;
-		data[size] = v2;
-		size++;
-		data[size] = c;
-		size++;
+		data[size++] = x2;
+		data[size++] = y2;
+		data[size++] = u2;
+		data[size++] = v2;
+		data[size++] = c;
 
-		data[size] = x3;
-		size++;
-		data[size] = y3;
-		size++;
-		data[size] = u3;
-		size++;
-		data[size] = v3;
-		size++;
-		data[size] = c;
-		size++;
+		data[size++] = x3;
+		data[size++] = y3;
+		data[size++] = u3;
+		data[size++] = v3;
+		data[size++] = c;
 	}
 
 	public void draw(Texture texture, float x1, float y1, float u1, float v1, float x2, float y2, float u2, float v2,
@@ -213,32 +188,20 @@ public class BatchDrawer
 		texture(texture);
 		color(false);
 
-		data[size] = x1;
-		size++;
-		data[size] = y1;
-		size++;
-		data[size] = u1;
-		size++;
-		data[size] = v1;
-		size++;
+		data[size++] = x1;
+		data[size++] = y1;
+		data[size++] = u1;
+		data[size++] = v1;
 
-		data[size] = x2;
-		size++;
-		data[size] = y2;
-		size++;
-		data[size] = u2;
-		size++;
-		data[size] = v2;
-		size++;
+		data[size++] = x2;
+		data[size++] = y2;
+		data[size++] = u2;
+		data[size++] = v2;
 
-		data[size] = x3;
-		size++;
-		data[size] = y3;
-		size++;
-		data[size] = u3;
-		size++;
-		data[size] = v3;
-		size++;
+		data[size++] = x3;
+		data[size++] = y3;
+		data[size++] = u3;
+		data[size++] = v3;
 	}
 
 	public void draw(float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3)
@@ -251,26 +214,17 @@ public class BatchDrawer
 		texture(null);
 		color(true);
 
-		data[size] = x1;
-		size++;
-		data[size] = y1;
-		size++;
-		data[size] = c1;
-		size++;
+		data[size++] = x1;
+		data[size++] = y1;
+		data[size++] = c1;
 
-		data[size] = x2;
-		size++;
-		data[size] = y2;
-		size++;
-		data[size] = c2;
-		size++;
+		data[size++] = x2;
+		data[size++] = y2;
+		data[size++] = c2;
 
-		data[size] = x3;
-		size++;
-		data[size] = y3;
-		size++;
-		data[size] = c3;
-		size++;
+		data[size++] = x3;
+		data[size++] = y3;
+		data[size++] = c3;
 	}
 
 	public void draw(float c, float x1, float y1, float x2, float y2, float x3, float y3)
@@ -296,56 +250,42 @@ public class BatchDrawer
 		data[size++] = c;
 	}
 
-	public void draw(Texture texture, float[] vertices, float color)
+	public void draw(Sprite sprite, float x, float y)
 	{
-		if (vertices.length > size)
-		{
-			return;
-		}
+		float x1 = x - sprite.originX;
+		float y1 = y - sprite.originY;
+		float x2 = x1 + sprite.width;
+		float y2 = y1 + sprite.height;
 
-		if (size + vertices.length > data.length)
-		{
-			flush();
-		}
-
-		texture(texture);
-
-		if (colorEnabled == false)
-		{
-			System.arraycopy(vertices, 0, data, size, vertices.length);
-			size += vertices.length;
-		}
-		else
-		{
-			for (int i = 0; i < vertices.length; i += 2)
-			{
-				if (texture != null)
-				{
-					System.arraycopy(vertices, i, data, size, 4);
-					i += 2;
-					size += 4;
-				}
-				else
-				{
-					System.arraycopy(vertices, i, data, size, 2);
-					size += 2;
-				}
-
-				data[size] = color;
-				size++;
-			}
-
-		}
-
+		draw(sprite.texture, x1, y1, sprite.u1, sprite.v1, x2, y1, sprite.u2, sprite.v1, x1, y2, sprite.u1, sprite.v2);
+		draw(sprite.texture, x2, y2, sprite.u2, sprite.v2, x1, y2, sprite.u1, sprite.v2, x2, y1, sprite.u2, sprite.v1);
 	}
 
-	void draw(Sprite sprite, float x, float y)
+	public void draw(Tile tile, float x1, float y1)
 	{
+		float x2 = x1 + tile.width;
+		float y2 = y1 + tile.height;
 
+		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
+		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
 
-	void draw(Sprite sprite, float x, float y, float rotation)
+	public void draw(Tile tile, float x1, float y1, float x2, float y2)
 	{
+		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
+		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
 
+	public void draw(Sprite sprite, float c, float x, float y)
+	{
+		float x1 = x - sprite.originX;
+		float y1 = y - sprite.originY;
+		float x2 = x1 + sprite.width;
+		float y2 = y1 + sprite.height;
+
+		draw(sprite.texture, c, x1, y1, sprite.u1, sprite.v1, x2, y1, sprite.u2, sprite.v1, x1, y2, sprite.u1,
+				sprite.v2);
+		draw(sprite.texture, c, x2, y2, sprite.u2, sprite.v2, x1, y2, sprite.u1, sprite.v2, x2, y1, sprite.u2,
+				sprite.v1);
+	}
 }

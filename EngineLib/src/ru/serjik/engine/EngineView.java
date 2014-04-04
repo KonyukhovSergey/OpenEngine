@@ -41,9 +41,9 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		init();
 	}
 
-	public abstract void onCreated();
+	public abstract void onCreated(GL10 gl);
 
-	public abstract void onChanged();
+	public abstract void onChanged(GL10 gl);
 
 	public abstract void onDrawFrame(GL10 gl);
 
@@ -75,14 +75,14 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		{
 			EngineView.this.width = width;
 			EngineView.this.height = height;
-			onChanged();
+			onChanged(gl);
 		}
 
 		@Override
 		public void onSurfaceCreated(GL10 gl, EGLConfig config)
 		{
 			eng.gl = gl;
-			onCreated();
+			onCreated(gl);
 		}
 	};
 }

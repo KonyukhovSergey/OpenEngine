@@ -1,8 +1,6 @@
 package ru.engine.test;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
+import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -11,32 +9,51 @@ import ru.serjik.engine.ColorTools;
 import ru.serjik.engine.EngineView;
 import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
+import ru.serjik.engine.Tile;
+import ru.serjik.engine.eng;
+import ru.serjik.utils.BitmapUtils;
 import android.content.Context;
+import android.os.SystemClock;
 
 public class TestView extends EngineView
 {
-	BatchDrawer bd;
+	private BatchDrawer bd;
+	private Texture atlas;
+	private Tile[] tiles;
+	private Tile background;
+
+	Random rnd = new Random(SystemClock.elapsedRealtime());
 
 	public TestView(Context context)
 	{
 		super(context);
 
-		bd = new BatchDrawer(512);
+		bd = new BatchDrawer(2048);
 
 	}
 
 	@Override
-	public void onCreated()
+	public void onCreated(GL10 gl)
 	{
-		// TODO Auto-generated method stub
-
+		atlas = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "snows.png"));
+		tiles = Tile.split(atlas, atlas.width / 4, atlas.height / 4);
+		background = new Tile(atlas, 0, atlas.height / 2, atlas.width, atlas.height / 2);
 	}
 
 	@Override
-	public void onChanged()
+	public void onChanged(GL10 gl)
 	{
-		// TODO Auto-generated method stub
+		gl.glViewport(0, 0, width(), height());
+		gl.glMatrixMode(GL10.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrthof(0, width(), height(), 0, 1, -1);
 
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glDisable(GL10.GL_DITHER);
+		gl.glDisable(GL10.GL_FOG);
+		gl.glDisable(GL10.GL_LIGHTING);
+		gl.glDisable(GL10.GL_DEPTH_TEST);
 	}
 
 	@Override
@@ -45,18 +62,16 @@ public class TestView extends EngineView
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		gl.glDisable(GL10.GL_BLEND);
-		gl.glDisable(GL10.GL_DITHER);
-		gl.glDisable(GL10.GL_FOG);
-		gl.glDisable(GL10.GL_LIGHTING);
-		gl.glDisable(GL10.GL_TEXTURE_2D);
 		Texture.enable();
+		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
 		gl.glShadeModel(GL10.GL_SMOOTH);
 
-		bd.draw(ColorTools.RED_XF00F, -1, 1, 0, -1, 1, 1);
+		bd.draw(background, 0, 0, width(), height());
 
-		bd.draw(-.5f, .5f, ColorTools.BLUE_X00FF, 0, -0.5f, ColorTools.GREEN_X0F0F, 0.5f, 0.5f, ColorTools.RED_XF00F);
-
+		for (int i = 0; i < 512; i++)
+		{
+			bd.draw(tiles[rnd.nextInt(8)], rnd.nextFloat() * width(), rnd.nextFloat() * height());
+		}
 		bd.flush();
 
 	}
