@@ -27,7 +27,6 @@ public class BatchDrawer
 		if (size > 0)
 		{
 			bb.put(data, 0, size);
-			eng.gl.glColorPointer(vertexSize, type, stride, pointer)
 			eng.gl.glDrawArrays(GL10.GL_TRIANGLES, 0, size / vertexSize);
 			size = 0;
 			bb.position(size);
