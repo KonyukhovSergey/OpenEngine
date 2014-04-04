@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 import ru.serjik.engine.BatchDrawer;
+import ru.serjik.engine.ColorTools;
 import ru.serjik.engine.EngineView;
 import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
@@ -50,44 +51,27 @@ public class TestView extends EngineView
 	    gl.glDisable(GL10.GL_FOG);
 	    gl.glDisable(GL10.GL_LIGHTING);
 	    gl.glDisable(GL10.GL_TEXTURE_2D);
+	    Texture.enable();
 	    gl.glShadeModel(GL10.GL_SMOOTH);
 
 	    float[] vertices = {
-	        -.5f, -0.5f,
-	        .5f, 0,
-	        0, .5f,
-	        .5f, 0.5f,
+	        -1, -1,ColorTools.XF00F_RED,
+	        -1, 1,ColorTools.X0F0F_GREEN,
+	        1, -1,ColorTools.X00FF_BLUE,
+	        1,1, ColorTools.XFFFF_WHITE,
 	    };
 	    
 	    FloatBuffer vertsBuffer = ByteBuffer.allocateDirect(vertices.length*4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-
-	    byte[] colors = {
-	    (byte) 64, (byte) 128, (byte) 128, (byte) 255,
-	    (byte) 255, (byte) 255, (byte) 255, (byte) 255,
-	    (byte) 200, (byte) 200, (byte) 200, (byte) 255,
-	    (byte) 200, (byte) 200, (byte) 200, (byte) 255,
-	    };
-
-//	    float[] colors = {
-//	    	    1.0f, 1.0f, 1.0f, 1.0f,
-//	    	    1.0f, 1.0f, 1.0f, 1.0f,
-//	    	    0.5f, 0.5f, 0.5f, 1.0f,
-//	    	    0.5f, 0.5f, 0.5f, 1.0f,
-//	    	    };
-	    
-	    ByteBuffer colorBuffer = ByteBuffer.allocateDirect(colors.length).order(ByteOrder.nativeOrder());
-	    
+	
 	    vertsBuffer.position(0);
 	    vertsBuffer.put(vertices);
-	    vertsBuffer.position(0);
-	    
-	    colorBuffer.position(0);
-	    colorBuffer.put(colors);
-	    colorBuffer.position(0);
 
-	    gl.glVertexPointer(2, GL10.GL_FLOAT, 0, vertsBuffer);
+	    vertsBuffer.position(0);
+	    gl.glVertexPointer(2, GL10.GL_FLOAT, 12, vertsBuffer);
 	    gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-	    gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, colorBuffer);
+	    
+	    vertsBuffer.position(2);
+	    gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 12, vertsBuffer);
 	    gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 	    gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 	    // End Render		

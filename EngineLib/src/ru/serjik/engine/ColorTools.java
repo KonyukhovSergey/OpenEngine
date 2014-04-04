@@ -23,6 +23,7 @@ public class ColorTools
 		{
 			return 1;
 		}
+		
 		return value;
 	}
 
@@ -43,27 +44,27 @@ public class ColorTools
 		case 3:
 			return color(
 					Integer.valueOf(hex.substring(0, 1), 16) / 15f,
-					Integer.valueOf(hex.substring(1, 1), 16) / 15f,
-					Integer.valueOf(hex.substring(2, 1), 16) / 15f,
+					Integer.valueOf(hex.substring(1, 2), 16) / 15f,
+					Integer.valueOf(hex.substring(2, 3), 16) / 15f,
 					1.0f);
 		case 4:
 			return color(
 					Integer.valueOf(hex.substring(0, 1), 16) / 15f,
-					Integer.valueOf(hex.substring(1, 1), 16) / 15f,
-					Integer.valueOf(hex.substring(2, 1), 16) / 15f,
-					Integer.valueOf(hex.substring(3, 1), 16) / 15f);
+					Integer.valueOf(hex.substring(1, 2), 16) / 15f,
+					Integer.valueOf(hex.substring(2, 3), 16) / 15f,
+					Integer.valueOf(hex.substring(3, 4), 16) / 15f);
 		case 6:
 			return color(
 					Integer.valueOf(hex.substring(0, 2), 16) / 255f,
-					Integer.valueOf(hex.substring(2, 2), 16) / 255f,
-					Integer.valueOf(hex.substring(4, 2), 16) / 255f,
+					Integer.valueOf(hex.substring(2, 4), 16) / 255f,
+					Integer.valueOf(hex.substring(4, 6), 16) / 255f,
 					1.0f);
 		case 8:
 			return color(
 					Integer.valueOf(hex.substring(0, 2), 16) / 255f,
-					Integer.valueOf(hex.substring(2, 2), 16) / 255f,
-					Integer.valueOf(hex.substring(4, 2), 16) / 255f,
-					Integer.valueOf(hex.substring(6, 2), 16) / 255f);
+					Integer.valueOf(hex.substring(2, 4), 16) / 255f,
+					Integer.valueOf(hex.substring(4, 6), 16) / 255f,
+					Integer.valueOf(hex.substring(6, 8), 16) / 255f);
 		}
 		return X000F_BLACK;
 	}
