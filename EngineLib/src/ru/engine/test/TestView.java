@@ -15,13 +15,13 @@ import android.content.Context;
 
 public class TestView extends EngineView
 {
-	
+	BatchDrawer bd;
 
 	public TestView(Context context)
 	{
 		super(context);
 
-
+		bd = new BatchDrawer(512);
 
 	}
 
@@ -44,38 +44,20 @@ public class TestView extends EngineView
 	{
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		
+
 		gl.glDisable(GL10.GL_BLEND);
-	    gl.glDisable(GL10.GL_DITHER);
-	    gl.glDisable(GL10.GL_FOG);
-	    gl.glDisable(GL10.GL_LIGHTING);
-	    gl.glDisable(GL10.GL_TEXTURE_2D);
-	    Texture.enable();
-	    gl.glShadeModel(GL10.GL_SMOOTH);
+		gl.glDisable(GL10.GL_DITHER);
+		gl.glDisable(GL10.GL_FOG);
+		gl.glDisable(GL10.GL_LIGHTING);
+		gl.glDisable(GL10.GL_TEXTURE_2D);
+		Texture.enable();
+		gl.glShadeModel(GL10.GL_SMOOTH);
 
-	    float[] vertices = {
-	        -1, -1,ColorTools.XF00F_RED,
-	        -1, 1,ColorTools.X0F0F_GREEN,
-	        1, -1,ColorTools.X00FF_BLUE,
-	        1,1, ColorTools.XFFFF_WHITE,
-	    };
-	    
-	    FloatBuffer vertsBuffer = ByteBuffer.allocateDirect(vertices.length*4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-	
-	    vertsBuffer.position(0);
-	    vertsBuffer.put(vertices);
+		bd.draw(ColorTools.RED_XF00F, -1, 1, 0, -1, 1, 1);
 
-	    vertsBuffer.position(0);
-	    gl.glVertexPointer(2, GL10.GL_FLOAT, 12, vertsBuffer);
-	    gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-	    
-	    vertsBuffer.position(2);
-	    gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 12, vertsBuffer);
-	    gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-	    gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-	    // End Render		
-		
+		bd.draw(-.5f, .5f, ColorTools.BLUE_X00FF, 0, -0.5f, ColorTools.GREEN_X0F0F, 0.5f, 0.5f, ColorTools.RED_XF00F);
+
+		bd.flush();
 
 	}
 

@@ -2,16 +2,16 @@ package ru.serjik.engine;
 
 public class ColorTools
 {
-	public static final float X0000_CLEAR		= color("0000");
-	public static final float XFFFF_WHITE		= color("ffff");
-	public static final float X000F_BLACK		= color("000f");
-	public static final float XF00F_RED			= color("f00f");
-	public static final float X0F0F_GREEN		= color("0f0f");
-	public static final float X00FF_BLUE		= color("00ff");
-	public static final float X0FFF_CYAN		= color("0fff");
-	public static final float XF0FF_MAGENTA		= color("f0ff");
-	public static final float XFF0F_YELLOW		= color("ff0f");
-	public static final float X777F_GRAY		= color("777f");
+	public static final float CLEAR_X0000		= color("0000");
+	public static final float WHITE_XFFFF		= color("ffff");
+	public static final float BLACK_X000F		= color("000f");
+	public static final float RED_XF00F			= color("f00f");
+	public static final float GREEN_X0F0F		= color("0f0f");
+	public static final float BLUE_X00FF		= color("00ff");
+	public static final float CYAN_X0FFF		= color("0fff");
+	public static final float MAGENTA_X0FFF		= color("f0ff");
+	public static final float YELLOW_XFF0F		= color("ff0f");
+	public static final float GRAY_X777F		= color("777f");
 
 	public static final float clamp(float value)
 	{
@@ -66,6 +66,6 @@ public class ColorTools
 					Integer.valueOf(hex.substring(4, 6), 16) / 255f,
 					Integer.valueOf(hex.substring(6, 8), 16) / 255f);
 		}
-		return X000F_BLACK;
+		return BLACK_X000F;
 	}
 }
