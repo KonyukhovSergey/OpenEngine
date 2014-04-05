@@ -269,6 +269,15 @@ public class BatchDrawer
 		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
 		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
+	
+	public void draw(Tile tile, float c, float x1, float y1)
+	{
+		float x2 = x1 + tile.width;
+		float y2 = y1 + tile.height;
+
+		draw(tile.texture,c, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
+		draw(tile.texture,c, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
+	}
 
 	public void draw(Tile tile, float x1, float y1, float x2, float y2)
 	{

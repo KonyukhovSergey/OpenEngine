@@ -1,6 +1,7 @@
 package ru.engine.test;
 
 import java.util.Random;
+import java.util.TooManyListenersException;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -28,7 +29,7 @@ public class TestView extends EngineView
 	{
 		super(context);
 
-		bd = new BatchDrawer(2048);
+		bd = new BatchDrawer(1024 * 16);
 
 	}
 
@@ -38,22 +39,12 @@ public class TestView extends EngineView
 		atlas = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "snows.png"));
 		tiles = Tile.split(atlas, atlas.width / 4, atlas.height / 4);
 		background = new Tile(atlas, 0, atlas.height / 2, atlas.width, atlas.height / 2);
+
 	}
 
 	@Override
 	public void onChanged(GL10 gl)
 	{
-		gl.glViewport(0, 0, width(), height());
-		gl.glMatrixMode(GL10.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrthof(0, width(), height(), 0, 1, -1);
-
-		gl.glEnable(GL10.GL_BLEND);
-		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glDisable(GL10.GL_DITHER);
-		gl.glDisable(GL10.GL_FOG);
-		gl.glDisable(GL10.GL_LIGHTING);
-		gl.glDisable(GL10.GL_DEPTH_TEST);
 	}
 
 	@Override
@@ -65,12 +56,20 @@ public class TestView extends EngineView
 		Texture.enable();
 		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
 		gl.glShadeModel(GL10.GL_SMOOTH);
-
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+		gl.glDisable(GL10.GL_DITHER);
+		gl.glDisable(GL10.GL_FOG);
+		gl.glDisable(GL10.GL_LIGHTING);
+		gl.glDisable(GL10.GL_DEPTH_TEST);
+		
 		bd.draw(background, 0, 0, width(), height());
+		
+		float color = ColorTools.color("fff2");
 
 		for (int i = 0; i < 512; i++)
 		{
-			bd.draw(tiles[rnd.nextInt(8)], rnd.nextFloat() * width(), rnd.nextFloat() * height());
+			bd.draw(tiles[rnd.nextInt(8)],color, rnd.nextFloat() * width(), rnd.nextFloat() * height());
 		}
 		bd.flush();
 
