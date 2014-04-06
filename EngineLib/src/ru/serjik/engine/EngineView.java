@@ -13,6 +13,7 @@ import android.util.Log;
 public abstract class EngineView extends GLSurfaceView implements FrameRateUpdateInterface
 {
 	private static final String TAG = "ru.serjik.engine.EngineView";
+	private static final float desiredWidth = 720;
 
 	private FrameRateCalculator frameRateCalculator;
 
@@ -73,14 +74,15 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		@Override
 		public void onSurfaceChanged(GL10 gl, int width, int height)
 		{
-			EngineView.this.width = width;
-			EngineView.this.height = height;
-			
-			gl.glViewport(0, 0, width(), height());
+			float ratio = (float) height / (float) width;
+			EngineView.this.width = (int) desiredWidth;
+			EngineView.this.height = (int) (desiredWidth * ratio);
+
+			gl.glViewport(0, 0, width, height);
 			gl.glMatrixMode(GL10.GL_PROJECTION);
 			gl.glLoadIdentity();
 			gl.glOrthof(0, width(), height(), 0, 1, -1);
-			
+
 			onChanged(gl);
 		}
 

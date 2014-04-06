@@ -55,8 +55,8 @@ public class BatchDrawer
 		{
 			flush();
 			this.texture = texture;
-			
-			if(texture!=null)
+
+			if (texture != null)
 			{
 				texture.bind();
 			}
@@ -269,14 +269,40 @@ public class BatchDrawer
 		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
 		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
-	
+
+	public void drawCentered(Tile tile, float x1, float y1)
+	{
+		final float sx = tile.width >> 1;
+		final float sy = tile.height >> 1;
+		final float x2 = x1 + sx;
+		final float y2 = y1 + sy;
+		x1 -= sx;
+		y1 -= sy;
+
+		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
+		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
+	}
+
+	public void drawScaledCentered(Tile tile, float scale, float x1, float y1)
+	{
+		final float sx = scale * (tile.width >> 1);
+		final float sy = scale * (tile.height >> 1);
+		final float x2 = x1 + sx;
+		final float y2 = y1 + sy;
+		x1 -= sx;
+		y1 -= sy;
+
+		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
+		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
+	}
+
 	public void draw(Tile tile, float c, float x1, float y1)
 	{
 		float x2 = x1 + tile.width;
 		float y2 = y1 + tile.height;
 
-		draw(tile.texture,c, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
-		draw(tile.texture,c, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
+		draw(tile.texture, c, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
+		draw(tile.texture, c, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
 
 	public void draw(Tile tile, float x1, float y1, float x2, float y2)
