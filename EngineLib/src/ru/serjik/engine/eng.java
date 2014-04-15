@@ -15,4 +15,5 @@ public class eng
 {
 	public static GL10 gl;
 	public static AssetManager am;
+	public static EngineView ev;	
 }

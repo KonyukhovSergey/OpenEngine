@@ -39,7 +39,7 @@ public class TestView extends EngineView
 		atlas = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "snows.png"));
 		tiles = Tile.split(atlas, atlas.width / 4, atlas.height / 4);
 		background = new Tile(atlas, 0, atlas.height / 2, atlas.width, atlas.height / 2);
-
+		Texture.enable();
 	}
 
 	@Override
@@ -53,21 +53,18 @@ public class TestView extends EngineView
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		Texture.enable();
 		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
-		gl.glShadeModel(GL10.GL_SMOOTH);
-		gl.glEnable(GL10.GL_BLEND);
-		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-		gl.glDisable(GL10.GL_DITHER);
-		gl.glDisable(GL10.GL_FOG);
-		gl.glDisable(GL10.GL_LIGHTING);
-		gl.glDisable(GL10.GL_DEPTH_TEST);
 		
+		gl.glShadeModel(GL10.GL_SMOOTH);
+		
+		bd.blending(false);
 		bd.draw(background, 0, 0, width(), height());
 		
+		bd.blending(true);
+		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		float color = ColorTools.color("fff2");
 
-		for (int i = 0; i < 512; i++)
+		for (int i = 0; i < 1024; i++)
 		{
 			bd.draw(tiles[rnd.nextInt(8)],color, rnd.nextFloat() * width(), rnd.nextFloat() * height());
 		}

@@ -53,6 +53,7 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		setRenderer(engineRenderer);
 		setRenderMode(RENDERMODE_CONTINUOUSLY);
 		frameRateCalculator = new FrameRateCalculator(this);
+		eng.ev = this;
 	}
 
 	@Override
@@ -90,6 +91,14 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		public void onSurfaceCreated(GL10 gl, EGLConfig config)
 		{
 			eng.gl = gl;
+
+			gl.glDisable(GL10.GL_BLEND);
+
+			gl.glDisable(GL10.GL_DITHER);
+			gl.glDisable(GL10.GL_FOG);
+			gl.glDisable(GL10.GL_LIGHTING);
+			gl.glDisable(GL10.GL_DEPTH_TEST);
+			
 			onCreated(gl);
 		}
 	};

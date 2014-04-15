@@ -5,7 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
 
-public class Texture
+public class Texture implements Disposable
 {
 	private static int current = 0;
 
@@ -90,6 +90,10 @@ public class Texture
 		current = id;
 	}
 
+	/* (non-Javadoc)
+	 * @see ru.serjik.engine.Disposable#dispose()
+	 */
+	@Override
 	public void dispose()
 	{
 		unbind();

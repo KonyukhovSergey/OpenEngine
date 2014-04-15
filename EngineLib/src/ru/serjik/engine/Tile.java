@@ -11,6 +11,11 @@ public class Tile
 
 	}
 
+	public Tile(Tile tile)
+	{
+		set(tile);
+	}
+
 	public Tile(Texture texture)
 	{
 		this.texture = texture;
@@ -27,6 +32,17 @@ public class Tile
 	{
 		this(texture);
 		set(u1, v1, u2, v2);
+	}
+
+	public void set(Tile tile)
+	{
+		texture = tile.texture;
+		u1 = tile.u1;
+		v1 = tile.v1;
+		u2 = tile.u2;
+		v2 = tile.v2;
+		width = tile.width;
+		height = tile.height;
 	}
 
 	public void set(int x, int y, int width, int height)
@@ -75,6 +91,7 @@ public class Tile
 			u1 = u2;
 			u2 = t;
 		}
+
 		if (y)
 		{
 			t = v1;

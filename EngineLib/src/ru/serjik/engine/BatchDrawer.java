@@ -11,7 +11,7 @@ public class BatchDrawer
 	private float[] data;
 	private FloatBuffer bb;
 
-	private Texture texture = null;
+	private Disposable texture = null;
 
 	private boolean blendingEnabled = false;
 	private int blendingSrc = 0;
@@ -32,7 +32,17 @@ public class BatchDrawer
 		if (this.blendingEnabled != isBlendingEnabled)
 		{
 			flush();
+			
 			this.blendingEnabled = isBlendingEnabled;
+
+			if (blendingEnabled)
+			{
+				eng.gl.glEnable(GL10.GL_BLEND);
+			}
+			else
+			{
+				eng.gl.glDisable(GL10.GL_BLEND);
+			}
 		}
 	}
 
@@ -43,6 +53,7 @@ public class BatchDrawer
 			if (blendingEnabled)
 			{
 				flush();
+				eng.gl.glBlendFunc(src, dst);
 			}
 			blendingDst = dst;
 			blendingSrc = src;
@@ -54,6 +65,7 @@ public class BatchDrawer
 		if (this.texture != texture)
 		{
 			flush();
+			
 			this.texture = texture;
 
 			if (texture != null)
@@ -113,7 +125,7 @@ public class BatchDrawer
 			eng.gl.glDrawArrays(GL10.GL_TRIANGLES, 0, size / vertexSize);
 
 			size = 0;
-			bb.position(size);
+			bb.position(0);
 		}
 	}
 
@@ -304,7 +316,7 @@ public class BatchDrawer
 		final float y2 = y1 + sy;
 		x1 -= sx;
 		y1 -= sy;
-		
+
 		draw(tile.texture, color, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
 		draw(tile.texture, color, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
