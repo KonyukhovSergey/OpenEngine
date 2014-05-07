@@ -90,9 +90,6 @@ public class Texture implements Disposable
 		current = id;
 	}
 
-	/* (non-Javadoc)
-	 * @see ru.serjik.engine.Disposable#dispose()
-	 */
 	@Override
 	public void dispose()
 	{

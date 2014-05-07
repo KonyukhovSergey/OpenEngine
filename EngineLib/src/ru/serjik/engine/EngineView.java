@@ -76,6 +76,7 @@ public abstract class EngineView extends GLSurfaceView implements FrameRateUpdat
 		public void onSurfaceChanged(GL10 gl, int width, int height)
 		{
 			float ratio = (float) height / (float) width;
+			
 			EngineView.this.width = (int) desiredWidth;
 			EngineView.this.height = (int) (desiredWidth * ratio);
 

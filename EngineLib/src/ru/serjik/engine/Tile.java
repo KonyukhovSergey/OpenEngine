@@ -4,7 +4,6 @@ public class Tile
 {
 	public Texture texture;
 	public float u1, v1, u2, v2;
-	public int width, height;
 
 	public Tile()
 	{
@@ -41,8 +40,6 @@ public class Tile
 		v1 = tile.v1;
 		u2 = tile.u2;
 		v2 = tile.v2;
-		width = tile.width;
-		height = tile.height;
 	}
 
 	public void set(int x, int y, int width, int height)
@@ -58,8 +55,8 @@ public class Tile
 
 	public void set(float u1, float v1, float u2, float v2)
 	{
-		width = Math.round(Math.abs(u2 - u1) * texture.width);
-		height = Math.round(Math.abs(v2 - v1) * texture.height);
+		int width = Math.round(Math.abs(u2 - u1) * texture.width);
+		int height = Math.round(Math.abs(v2 - v1) * texture.height);
 
 		if (width == 1)
 		{
@@ -100,12 +97,12 @@ public class Tile
 		}
 	}
 
-	public boolean isFlipX()
+	public final boolean isFlipX()
 	{
 		return u1 > u2;
 	}
 
-	public boolean isFlipY()
+	public final boolean isFlipY()
 	{
 		return v1 > v2;
 	}

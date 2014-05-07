@@ -261,7 +261,7 @@ public class BatchDrawer
 		data[size++] = y3;
 		data[size++] = c;
 	}
-
+/*
 	public void draw(Sprite sprite, float x, float y)
 	{
 		float x1 = x - sprite.originX;
@@ -348,4 +348,6 @@ public class BatchDrawer
 		draw(sprite.texture, c, x2, y2, sprite.u2, sprite.v2, x1, y2, sprite.u1, sprite.v2, x2, y1, sprite.u2,
 				sprite.v1);
 	}
+*/
+
 }
