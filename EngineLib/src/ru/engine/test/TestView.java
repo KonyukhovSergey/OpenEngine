@@ -64,7 +64,7 @@ public class TestView extends EngineView
 		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		float color = ColorTools.color("fff2");
 
-		for (int i = 0; i < 1024; i++)
+		for (int i = 0; i < 16 * 1024; i++)
 		{
 			bd.draw(tiles[rnd.nextInt(8)],color, rnd.nextFloat() * width(), rnd.nextFloat() * height());
 		}

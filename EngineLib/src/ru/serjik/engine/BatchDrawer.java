@@ -121,6 +121,8 @@ public class BatchDrawer
 			{
 				eng.gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
 			}
+			
+			
 
 			eng.gl.glDrawArrays(GL10.GL_TRIANGLES, 0, size / vertexSize);
 
@@ -272,7 +274,7 @@ public class BatchDrawer
 		draw(sprite.texture, x1, y1, sprite.u1, sprite.v1, x2, y1, sprite.u2, sprite.v1, x1, y2, sprite.u1, sprite.v2);
 		draw(sprite.texture, x2, y2, sprite.u2, sprite.v2, x1, y2, sprite.u1, sprite.v2, x2, y1, sprite.u2, sprite.v1);
 	}
-
+*/
 	public void draw(Tile tile, float x1, float y1)
 	{
 		float x2 = x1 + tile.width;
@@ -335,7 +337,7 @@ public class BatchDrawer
 		draw(tile.texture, x1, y1, tile.u1, tile.v1, x2, y1, tile.u2, tile.v1, x1, y2, tile.u1, tile.v2);
 		draw(tile.texture, x2, y2, tile.u2, tile.v2, x1, y2, tile.u1, tile.v2, x2, y1, tile.u2, tile.v1);
 	}
-
+/*
 	public void draw(Sprite sprite, float c, float x, float y)
 	{
 		float x1 = x - sprite.originX;

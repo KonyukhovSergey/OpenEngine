@@ -15,14 +15,13 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		eng.am = getAssets();
-		surfaceView = new TestView(this);
+		surfaceView = new TestMeshView(this);
 		setContentView(surfaceView);
 	}
 
 	@Override
 	protected void onResume()
 	{
-
 		super.onResume();
 		surfaceView.onResume();
 	}
