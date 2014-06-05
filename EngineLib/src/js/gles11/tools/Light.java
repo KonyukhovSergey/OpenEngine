@@ -89,7 +89,7 @@ public class Light
 		return this;
 	}
 
-	public Light setSpecular(GL10 gl, float r, float g, float b, float a)
+	public Light setSpecular(float r, float g, float b, float a)
 	{
 		values[12] = r;
 		values[13] = g;
