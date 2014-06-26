@@ -88,6 +88,13 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 		floor.bind();
 		floor.draw();
+		
+		gl.glPushMatrix();
+		gl.glTranslatef(hexLocation.R, 0, 0);
+		floor.draw();
+		gl.glPopMatrix();
+		
+		
 		wall.bind();
 
 		for (Vector3D pos : positions)

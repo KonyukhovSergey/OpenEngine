@@ -2,6 +2,8 @@ package ru.engine.test;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.opengl.GLU;
+
 public class HexLocation
 {
 	private float x = 0, y = 0, angle = 0;
@@ -11,7 +13,7 @@ public class HexLocation
 	private float dx, dy;
 	private int dr, dq;
 
-	private static final float R = (float) (2 * Math.sqrt(3) / 2);
+	public static final float R = (float) (Math.sqrt(3) / 2);
 
 	private LocationState state = LocationState.NONE;
 
@@ -26,9 +28,10 @@ public class HexLocation
 
 	public void setupView(GL10 gl)
 	{
-		gl.glTranslatef(x, -0.5f, - 1);
-		gl.glRotatef(angle+30, 0, 1, 0);
-		gl.glTranslatef(x,0, y);
+		float dx = (float) Math.cos(3.1415962 * angle / 180.0) * R;
+		float dy = (float) Math.sin(3.1415962 * angle / 180.0) * R;
+
+		GLU.gluLookAt(gl, x + dx, 0.5f, y + dy, x, 0.5f, y, 0, 1, 0);
 	}
 
 	public void tick()
