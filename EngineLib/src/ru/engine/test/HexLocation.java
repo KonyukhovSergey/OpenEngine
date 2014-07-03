@@ -17,6 +17,14 @@ public class HexLocation
 	private LocationState state = LocationState.NONE;
 	private float actionCompletion = 0;
 
+	public HexLocation(int i, int j)
+	{
+		q = i;
+		r = j;
+		x.setup(HexUtils.x(q, r) ,0);
+		y.setup(HexUtils.y(r), 0);
+	}
+
 	public void setupView(GL10 gl)
 	{
 		float dx = (float) Math.cos(3.1415962f * a.value() / 180.0) * HexUtils.DELTA_WIDTH;

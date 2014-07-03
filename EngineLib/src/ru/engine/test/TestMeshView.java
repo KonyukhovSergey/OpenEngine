@@ -10,7 +10,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import js.gles11.tools.Light;
 import js.gles11.tools.Lighting;
-import js.math.Vector3D;
 
 import ru.serjik.engine.Mesh;
 import ru.serjik.engine.MeshFileLoader;
@@ -32,7 +31,10 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 	private Mesh wall, floor;
 	private Light sun;
 
-	private HexLocation hexLocation = new HexLocation();
+	private int size = 50;
+	private HexLocation hexLocation = new HexLocation(size/2, size/2);
+
+	private byte[] field;
 
 	public TestMeshView(Context context)
 	{
@@ -40,6 +42,14 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 		setRenderer(this);
 		setRenderMode(RENDERMODE_CONTINUOUSLY);
+
+		
+		field = new byte[size * size];
+		Random rnd = new Random(1);
+		for (int i = 0; i < field.length; i++)
+		{
+			field[i] = (byte) (rnd.nextFloat() > 0.9f ? 1 : 0);
+		}
 
 		try
 		{
@@ -68,7 +78,8 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		Texture.enable();
 		decals.bind();
 		gl.glClearColor(0.1f, 0.5f, 0.7f, 0);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+
 		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
 		gl.glShadeModel(GL10.GL_SMOOTH);
 
@@ -78,7 +89,7 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 		floor.bind();
 
-		int dist = 5;
+		int dist = 8;
 
 		for (int q = 0; q < dist * 2 + 1; q++)
 		{
@@ -87,10 +98,29 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 				if (HexUtils.distance(q, r, dist, dist) <= dist)
 				{
 					gl.glPushMatrix();
+
 					gl.glTranslatef(HexUtils.x(q + hexLocation.q - dist, hexLocation.r + r - dist), 0,
 							HexUtils.y(hexLocation.r + r - dist));
 
+					floor.bind();
 					floor.draw();
+					
+					int fq = q + hexLocation.q - dist;
+					int fr = r + hexLocation.r - dist;
+
+					if (fq >= 0 && fq < size && fr >= 0 && fr < size)
+					{
+						if (field[fq + fr * size] ==1)
+						{
+							wall.bind();
+							wall.draw();
+						}
+					}
+					else
+					{
+						wall.bind();
+						wall.draw();
+					}
 					gl.glPopMatrix();
 				}
 			}
@@ -145,6 +175,13 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		gl.glDepthFunc(GL10.GL_LESS);
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 		gl.glEnable(GL10.GL_LIGHTING);
+		
+		gl.glEnable(GL10.GL_FOG);
+		gl.glFogfv(gl.GL_FOG_COLOR,new float[] {0.1f, 0.5f, 0.7f, 0},0);
+		gl.glFogf(gl.GL_FOG_START, 2);
+		gl.glFogf(gl.GL_FOG_END, 8);
+		gl.glFogf(gl.GL_FOG_DENSITY, 0.25f);
+		gl.glFogx(gl.GL_FOG_MODE, gl.GL_EXP2);
 
 		sun.init(gl, 0);
 		sun.setPosition(0, 1, 0);
