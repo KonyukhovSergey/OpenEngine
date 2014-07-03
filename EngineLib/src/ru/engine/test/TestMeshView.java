@@ -34,8 +34,6 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 	private HexLocation hexLocation = new HexLocation();
 
-	private List<Vector3D> positions;
-
 	public TestMeshView(Context context)
 	{
 		super(context);
@@ -56,15 +54,7 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 			e.printStackTrace();
 		}
 
-		positions = new ArrayList<Vector3D>();
-		Random rnd = new Random();
-
-		for (int i = 0; i < 256; i++)
-		{
-			positions.add(new Vector3D(rnd.nextFloat() * 800 - 40, 0, rnd.nextFloat() * 80 - 40));
-		}
 		setClickable(true);
-
 	}
 
 	@Override
@@ -87,24 +77,26 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		hexLocation.tick();
 
 		floor.bind();
-		floor.draw();
-		
-		gl.glPushMatrix();
-		gl.glTranslatef(hexLocation.R, 0, 0);
-		floor.draw();
-		gl.glPopMatrix();
-		
-		
-		wall.bind();
 
-		for (Vector3D pos : positions)
+		int dist = 5;
+
+		for (int q = 0; q < dist * 2 + 1; q++)
 		{
-			gl.glPushMatrix();
-			gl.glTranslatef(pos.x, pos.y, pos.z);
-			wall.draw();
-			gl.glPopMatrix();
+			for (int r = 0; r < dist * 2 + 1; r++)
+			{
+				if (HexUtils.distance(q, r, dist, dist) <= dist)
+				{
+					gl.glPushMatrix();
+					gl.glTranslatef(HexUtils.x(q + hexLocation.q - dist, hexLocation.r + r - dist), 0,
+							HexUtils.y(hexLocation.r + r - dist));
 
+					floor.draw();
+					gl.glPopMatrix();
+				}
+			}
 		}
+
+		wall.bind();
 
 	}
 

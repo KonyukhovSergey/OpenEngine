@@ -6,67 +6,56 @@ import android.opengl.GLU;
 
 public class HexLocation
 {
-	private float x = 0, y = 0, angle = 0;
-	private int r = 0, q = 0, direction = 0;
+	private static final float SPEED = 0.05f;
 
-	private float sx, sy;
-	private float dx, dy;
-	private int dr, dq;
+	public int q = 0, r = 0, dir = 0;
 
-	public static final float R = (float) (Math.sqrt(3) / 2);
+	private Interpolator x = new Interpolator(0, 0, Interpolator.CUBIC);
+	private Interpolator y = new Interpolator(0, 0, Interpolator.CUBIC);
+	private Interpolator a = new Interpolator(120, 0, Interpolator.CUBIC);
 
 	private LocationState state = LocationState.NONE;
-
 	private float actionCompletion = 0;
-	private float actionStart = 0;
-	private float actionDelta = 0;
-
-	private float animate(float x)
-	{
-		return (3 - 2 * x) * x * x;
-	}
 
 	public void setupView(GL10 gl)
 	{
-		float dx = (float) Math.cos(3.1415962 * angle / 180.0) * R;
-		float dy = (float) Math.sin(3.1415962 * angle / 180.0) * R;
+		float dx = (float) Math.cos(3.1415962f * a.value() / 180.0) * HexUtils.DELTA_WIDTH;
+		float dy = (float) Math.sin(3.1415962f * a.value() / 180.0) * HexUtils.DELTA_WIDTH;
 
-		GLU.gluLookAt(gl, x + dx, 0.5f, y + dy, x, 0.5f, y, 0, 1, 0);
+		GLU.gluLookAt(gl, x.value() + dx, 0.5f, y.value() + dy, x.value(), 0.5f, y.value(), 0, 1, 0);
 	}
 
 	public void tick()
 	{
 		if (state == LocationState.ROTATE)
 		{
-			actionCompletion += 0.05;
+			actionCompletion += SPEED;
 
 			if (actionCompletion < 1)
 			{
-				angle = actionStart + animate(actionCompletion) * actionDelta;
+				a.position(actionCompletion);
 			}
 			else
 			{
-				angle = actionStart + actionDelta;
+				a.setup(a.end(), 0);
 				state = LocationState.NONE;
 			}
 		}
 		else if (state == LocationState.MOVE)
 		{
-			actionCompletion += 0.05;
+			actionCompletion += SPEED;
 
 			if (actionCompletion < 1)
 			{
-				float v = animate(actionCompletion);
-				x = sx + v * dx;
-				y = sy + v * dy;
+				x.position(actionCompletion);
+				y.position(actionCompletion);
 			}
 			else
 			{
-				x = sx + dx;
-				y = sy + dy;
+				x.setup(x.end(), 0);
+				y.setup(y.end(), 0);
 				state = LocationState.NONE;
 			}
-
 		}
 	}
 
@@ -76,10 +65,8 @@ public class HexLocation
 		{
 			state = LocationState.ROTATE;
 			actionCompletion = 0;
-			actionStart = angle;
-			actionDelta = 60;
-			direction = (direction + 1 + 6) % 6;
-
+			a.setup(HexUtils.angle[dir], HexUtils.angle[dir] + 60);
+			dir = (dir + 1 + 6) % 6;
 		}
 	}
 
@@ -89,9 +76,8 @@ public class HexLocation
 		{
 			state = LocationState.ROTATE;
 			actionCompletion = 0;
-			actionStart = angle;
-			actionDelta = -60;
-			direction = (direction - 1 + 6) % 6;
+			a.setup(HexUtils.angle[dir], HexUtils.angle[dir] - 60);
+			dir = (dir - 1 + 6) % 6;
 		}
 	}
 
@@ -101,10 +87,12 @@ public class HexLocation
 		{
 			state = LocationState.MOVE;
 			actionCompletion = 0;
-			sx = x;
-			sy = y;
-			dx = -(float) Math.cos(3.1415962 * angle / 180.0) * R;
-			dy = -(float) Math.sin(3.1415962 * angle / 180.0) * R;
+
+			x.setup(HexUtils.x(q, r), HexUtils.x(q + HexUtils.dq[dir], r + HexUtils.dr[dir]));
+			y.setup(HexUtils.y(r), HexUtils.y(r + HexUtils.dr[dir]));
+
+			q += HexUtils.dq[dir];
+			r += HexUtils.dr[dir];
 		}
 	}
 
@@ -114,10 +102,10 @@ public class HexLocation
 		{
 			state = LocationState.MOVE;
 			actionCompletion = 0;
-			sx = x;
-			sy = y;
-			dx = (float) Math.cos(3.1415962 * angle / 180.0) * R;
-			dy = (float) Math.sin(3.1415962 * angle / 180.0) * R;
+			x.setup(HexUtils.x(q, r), HexUtils.x(q - HexUtils.dq[dir], r - HexUtils.dr[dir]));
+			y.setup(HexUtils.y(r), HexUtils.y(r - HexUtils.dr[dir]));
+			q -= HexUtils.dq[dir];
+			r -= HexUtils.dr[dir];
 		}
 	}
 
