@@ -32,7 +32,7 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 	private Light sun;
 
 	private int size = 50;
-	private HexLocation hexLocation = new HexLocation(size/2, size/2);
+	private HexLocation hexLocation = new HexLocation(size / 2, size / 2);
 
 	private byte[] field;
 
@@ -43,7 +43,6 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		setRenderer(this);
 		setRenderMode(RENDERMODE_CONTINUOUSLY);
 
-		
 		field = new byte[size * size];
 		Random rnd = new Random(1);
 		for (int i = 0; i < field.length; i++)
@@ -104,13 +103,13 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 					floor.bind();
 					floor.draw();
-					
+
 					int fq = q + hexLocation.q - dist;
 					int fr = r + hexLocation.r - dist;
 
 					if (fq >= 0 && fq < size && fr >= 0 && fr < size)
 					{
-						if (field[fq + fr * size] ==1)
+						if (field[fq + fr * size] == 1)
 						{
 							wall.bind();
 							wall.draw();
@@ -118,8 +117,8 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 					}
 					else
 					{
-						wall.bind();
-						wall.draw();
+						// wall.bind();
+						// wall.draw();
 					}
 					gl.glPopMatrix();
 				}
@@ -169,19 +168,19 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		gl.glViewport(0, 0, width, height);
 		gl.glMatrixMode(GL10.GL_PROJECTION);
 		gl.glLoadIdentity();
-		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 1.0f, 200.0f);
+		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 1.0f, 20.0f);
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 
 		gl.glDepthFunc(GL10.GL_LESS);
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 		gl.glEnable(GL10.GL_LIGHTING);
-		
+
 		gl.glEnable(GL10.GL_FOG);
-		gl.glFogfv(gl.GL_FOG_COLOR,new float[] {0.1f, 0.5f, 0.7f, 0},0);
-		gl.glFogf(gl.GL_FOG_START, 2);
-		gl.glFogf(gl.GL_FOG_END, 8);
-		gl.glFogf(gl.GL_FOG_DENSITY, 0.25f);
-		gl.glFogx(gl.GL_FOG_MODE, gl.GL_EXP2);
+		gl.glFogfv(GL10.GL_FOG_COLOR, new float[] { 0.1f, 0.5f, 0.7f, 0 }, 0);
+		gl.glFogf(GL10.GL_FOG_START, 2);
+		gl.glFogf(GL10.GL_FOG_END, 8);
+		gl.glFogf(GL10.GL_FOG_DENSITY, 0.25f);
+		gl.glFogx(GL10.GL_FOG_MODE, GL10.GL_EXP2);
 
 		sun.init(gl, 0);
 		sun.setPosition(0, 1, 0);
@@ -190,7 +189,6 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		sun.setSpecular(1.0f, 1.0f, 1.0f, 1);
 		sun.setProfile(1.0f, 0.01f, 0.0f);
 		sun.on();
-
 	}
 
 	@Override
