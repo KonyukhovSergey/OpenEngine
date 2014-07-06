@@ -32,6 +32,11 @@ public class HexLocation
 
 		GLU.gluLookAt(gl, x.value() + dx, 0.5f, y.value() + dy, x.value(), 0.5f, y.value(), 0, 1, 0);
 	}
+	
+	public boolean isStoped()
+	{
+		return state == LocationState.NONE;
+	}
 
 	public void tick()
 	{
@@ -67,7 +72,7 @@ public class HexLocation
 		}
 	}
 
-	public void rotateRight()
+	public boolean rotateRight()
 	{
 		if (state == LocationState.NONE)
 		{
@@ -75,10 +80,12 @@ public class HexLocation
 			actionCompletion = 0;
 			a.setup(HexUtils.angle[dir], HexUtils.angle[dir] + 60);
 			dir = (dir + 1 + 6) % 6;
+			return true;
 		}
+		return false;
 	}
 
-	public void rotateLeft()
+	public boolean rotateLeft()
 	{
 		if (state == LocationState.NONE)
 		{
@@ -86,10 +93,12 @@ public class HexLocation
 			actionCompletion = 0;
 			a.setup(HexUtils.angle[dir], HexUtils.angle[dir] - 60);
 			dir = (dir - 1 + 6) % 6;
+			return true;
 		}
+		return false;
 	}
 
-	public void moveForward()
+	public boolean moveForward()
 	{
 		if (state == LocationState.NONE)
 		{
@@ -101,10 +110,12 @@ public class HexLocation
 
 			q += HexUtils.dq[dir];
 			r += HexUtils.dr[dir];
+			return true;
 		}
+		return false;
 	}
 
-	public void moveBackward()
+	public boolean moveBackward()
 	{
 		if (state == LocationState.NONE)
 		{
@@ -114,7 +125,9 @@ public class HexLocation
 			y.setup(HexUtils.y(r), HexUtils.y(r - HexUtils.dr[dir]));
 			q -= HexUtils.dq[dir];
 			r -= HexUtils.dr[dir];
+			return true;
 		}
+		return false;
 	}
 
 	private enum LocationState

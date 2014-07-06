@@ -2,7 +2,9 @@ package ru.engine.test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -35,6 +37,8 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 	private HexLocation hexLocation = new HexLocation(size / 2, size / 2);
 
 	private byte[] field;
+	
+	private Queue<UserCommand> commands = new LinkedList<UserCommand>();
 
 	public TestMeshView(Context context)
 	{
@@ -126,7 +130,33 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		}
 
 		wall.bind();
+		
+		passUserCommands();
 
+	}
+
+	private void passUserCommands()
+	{
+		if(hexLocation.isStoped() && commands.size()>0)
+		{
+			switch (commands.poll())
+			{
+			case MOVE_FORWARD:
+				hexLocation.moveForward();
+				break;
+			case MOVE_BACK:
+				hexLocation.moveBackward();
+				break;
+			case ROTATE_LEFT:
+				hexLocation.rotateLeft();
+				break;
+			case ROTATE_RIGHT:
+				hexLocation.rotateRight();
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -139,21 +169,25 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 			if (x < getWidth() / 3)
 			{
-				hexLocation.rotateLeft();
+				commands.add(UserCommand.ROTATE_LEFT);
+				//hexLocation.rotateLeft();
 			}
 			else if (x > (2 * getWidth()) / 3)
 			{
-				hexLocation.rotateRight();
+				commands.add(UserCommand.ROTATE_RIGHT);
+				//hexLocation.rotateRight();
 			}
 			else
 			{
 				if (y < (3 * getHeight()) / 4)
 				{
-					hexLocation.moveForward();
+					commands.add(UserCommand.MOVE_FORWARD);
+					//hexLocation.moveForward();
 				}
 				else
 				{
-					hexLocation.moveBackward();
+					commands.add(UserCommand.MOVE_BACK);
+					//hexLocation.moveBackward();
 				}
 			}
 
