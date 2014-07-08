@@ -30,14 +30,14 @@ import android.view.MotionEvent;
 public class TestMeshView extends GLSurfaceView implements Renderer
 {
 	private Texture decals;
-	private Mesh wall, floor;
+	private Mesh wall, floor, tree;
 	private Light sun;
 
 	private int size = 50;
 	private HexLocation hexLocation = new HexLocation(size / 2, size / 2);
 
 	private byte[] field;
-	
+
 	private Queue<UserCommand> commands = new LinkedList<UserCommand>();
 
 	public TestMeshView(Context context)
@@ -51,15 +51,29 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		Random rnd = new Random(1);
 		for (int i = 0; i < field.length; i++)
 		{
-			field[i] = (byte) (rnd.nextFloat() > 0.9f ? 1 : 0);
+			float v = rnd.nextFloat();
+			
+			if (v > 0.975f)
+			{
+				field[i] = 2;
+			}
+			else if (v > 0.9f)
+			{
+				field[i] = 1;
+			}
+			else
+			{
+				field[i] = 0;
+			}
 		}
 
 		try
 		{
-			MeshFileLoader mfl = new MeshFileLoader(FileUtils.readAllLines(eng.am.open("decals.obj"), true));
+			MeshFileLoader mfl = new MeshFileLoader(FileUtils.readAllLines(eng.am.open("decals.jso"), true));
 
 			wall = new Mesh(mfl.data("wall"));
 			floor = new Mesh(mfl.data("floor"));
+			tree = new Mesh(mfl.data("tree"));
 
 		}
 		catch (IOException e)
@@ -118,6 +132,12 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 							wall.bind();
 							wall.draw();
 						}
+						else if(field[fq+fr*size]==2)
+						{
+							tree.bind();
+							gl.glScalef(2, 2, 2);
+							tree.draw();
+						}
 					}
 					else
 					{
@@ -130,14 +150,14 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		}
 
 		wall.bind();
-		
+
 		passUserCommands();
 
 	}
 
 	private void passUserCommands()
 	{
-		if(hexLocation.isStoped() && commands.size()>0)
+		if (hexLocation.isStoped() && commands.size() > 0)
 		{
 			switch (commands.poll())
 			{
@@ -170,24 +190,24 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 			if (x < getWidth() / 3)
 			{
 				commands.add(UserCommand.ROTATE_LEFT);
-				//hexLocation.rotateLeft();
+				// hexLocation.rotateLeft();
 			}
 			else if (x > (2 * getWidth()) / 3)
 			{
 				commands.add(UserCommand.ROTATE_RIGHT);
-				//hexLocation.rotateRight();
+				// hexLocation.rotateRight();
 			}
 			else
 			{
 				if (y < (3 * getHeight()) / 4)
 				{
 					commands.add(UserCommand.MOVE_FORWARD);
-					//hexLocation.moveForward();
+					// hexLocation.moveForward();
 				}
 				else
 				{
 					commands.add(UserCommand.MOVE_BACK);
-					//hexLocation.moveBackward();
+					// hexLocation.moveBackward();
 				}
 			}
 
@@ -237,7 +257,7 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		// gl.glCullFace(GL10.GL_CW);
 		// gl.glEnable(GL10.GL_CULL_FACE);
 
-		decals = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "decals.png"));
+		decals = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "decals3.png"));
 
 		// gl.glTranslatef(0, 0, 1);
 
