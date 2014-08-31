@@ -49,6 +49,7 @@ public class BitmapUtils
 		try
 		{
 			InputStream is = am.open(fileName);
+			
 			Bitmap bmp = BitmapFactory.decodeStream(is);
 			is.close();
 			return bmp;

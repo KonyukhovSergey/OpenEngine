@@ -81,7 +81,7 @@ public class Texture implements Disposable
 
 	public void bind()
 	{
-		if (current > 0)
+		if (current != id)
 		{
 			unbind();
 		}

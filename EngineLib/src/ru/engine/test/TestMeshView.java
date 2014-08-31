@@ -14,7 +14,7 @@ import js.gles11.tools.Light;
 import js.gles11.tools.Lighting;
 
 import ru.serjik.engine.Mesh;
-import ru.serjik.engine.MeshFileLoader;
+import ru.serjik.engine.MeshLoader;
 import ru.serjik.engine.Texture;
 import ru.serjik.engine.eng;
 import ru.serjik.utils.BitmapUtils;
@@ -52,7 +52,7 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		for (int i = 0; i < field.length; i++)
 		{
 			float v = rnd.nextFloat();
-			
+
 			if (v > 0.975f)
 			{
 				field[i] = 2;
@@ -69,7 +69,7 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 		try
 		{
-			MeshFileLoader mfl = new MeshFileLoader(FileUtils.readAllLines(eng.am.open("decals.jso"), true));
+			MeshLoader mfl = new MeshLoader(FileUtils.readAllLines(eng.am.open("decals.jso"), true));
 
 			wall = new Mesh(mfl.data("wall"));
 			floor = new Mesh(mfl.data("floor"));
@@ -97,7 +97,9 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 		gl.glClearColor(0.1f, 0.5f, 0.7f, 0);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
-		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
+		//Texture.filter(GL10.GL_LINEAR_MIPMAP_LINEAR, GL10.GL_LINEAR_MIPMAP_NEAREST);
+		Texture.filter(GL10.GL_NEAREST, GL10.GL_NEAREST);
+
 		gl.glShadeModel(GL10.GL_SMOOTH);
 
 		Lighting.on(gl);
@@ -132,10 +134,10 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 							wall.bind();
 							wall.draw();
 						}
-						else if(field[fq+fr*size]==2)
+						else if (field[fq + fr * size] == 2)
 						{
 							tree.bind();
-							gl.glScalef(2, 2, 2);
+							// gl.glScalef(2, 2, 2);
 							tree.draw();
 						}
 					}
@@ -155,6 +157,18 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 	}
 
+	private byte getFieldAt(int dq, int dr)
+	{
+		int fq = dq + hexLocation.q;
+		int fr = dr + hexLocation.r;
+
+		if (fq >= 0 && fq < size && fr >= 0 && fr < size)
+		{
+			return field[fq + fr * size];
+		}
+		return 0;
+	}
+
 	private void passUserCommands()
 	{
 		if (hexLocation.isStoped() && commands.size() > 0)
@@ -162,10 +176,16 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 			switch (commands.poll())
 			{
 			case MOVE_FORWARD:
-				hexLocation.moveForward();
+				if (getFieldAt(HexUtils.dq[hexLocation.dir], HexUtils.dr[hexLocation.dir]) == 0)
+				{
+					hexLocation.moveForward();
+				}
 				break;
 			case MOVE_BACK:
-				hexLocation.moveBackward();
+				if (getFieldAt(-HexUtils.dq[hexLocation.dir], -HexUtils.dr[hexLocation.dir]) == 0)
+				{
+					hexLocation.moveBackward();
+				}
 				break;
 			case ROTATE_LEFT:
 				hexLocation.rotateLeft();
@@ -254,8 +274,8 @@ public class TestMeshView extends GLSurfaceView implements Renderer
 
 		gl.glDisable(GL10.GL_DITHER);
 		gl.glDisable(GL10.GL_FOG);
-		// gl.glCullFace(GL10.GL_CW);
-		// gl.glEnable(GL10.GL_CULL_FACE);
+		gl.glCullFace(GL10.GL_CW);
+		gl.glEnable(GL10.GL_CULL_FACE);
 
 		decals = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "decals3.png"));
 

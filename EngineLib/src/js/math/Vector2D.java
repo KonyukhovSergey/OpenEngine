@@ -1,6 +1,5 @@
 package js.math;
 
-
 public class Vector2D
 {
 	public float x;
@@ -100,16 +99,17 @@ public class Vector2D
 	{
 		float length = length();
 
-		if (MathUtils.isZero(length) == false)
-		{
-			x /= length;
-			y /= length;
-		}
-		else
+		if (MathUtils.isZero(length))
 		{
 			x = 0;
 			y = 0;
 		}
+		else
+		{
+			x /= length;
+			y /= length;
+		}
+
 	}
 
 	public final void scale(float scalar)

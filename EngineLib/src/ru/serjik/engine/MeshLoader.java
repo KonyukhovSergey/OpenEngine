@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MeshFileLoader
+public class MeshLoader
 {
 	private List<Vector> verticies = new ArrayList<Vector>();
 	private List<Vector> normals = new ArrayList<Vector>();
@@ -18,7 +18,7 @@ public class MeshFileLoader
 	private Map<String, MeshData> meshes = new HashMap<String, MeshData>();
 	private String currentMeshName = null;
 
-	public MeshFileLoader(String[] lines)
+	public MeshLoader(List<String> lines)
 	{
 		for (String line : lines)
 		{

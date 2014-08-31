@@ -3,7 +3,6 @@ package js.math;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLU;
-import android.util.FloatMath;
 
 public class Basis
 {
@@ -116,7 +115,8 @@ public class Basis
 
 	public void rotateLR(float angle)
 	{
-		// �������� ������������ �������
+		// �������� ������������
+		// �������
 		float tx, ty, tz;
 		float sint, cost;
 
@@ -140,7 +140,8 @@ public class Basis
 
 	public void rotateUD(float angle)
 	{
-		// ������ �������� ������������ �������
+		// ������ ��������
+		// ������������ �������
 		float tx, ty, tz;
 		float sint, cost;
 
@@ -165,7 +166,8 @@ public class Basis
 
 	public void rotateCW(float angle)
 	{
-		// ������ �������� ������������ �������
+		// ������ ��������
+		// ������������ �������
 		float tx, ty, tz;
 		float sint, cost;
 
@@ -195,13 +197,12 @@ public class Basis
 
 	public void transform(GL10 gl)
 	{
-		float tfx, tfy, tfz, tux, tuy, tuz;
+		float tfx, tfz, tux, tuy, tuz;
 		float a, sina, cosa;
 
 		gl.glTranslatef(px, py, pz);
 
 		tfx = fx;
-		tfy = fy;
 		tfz = fz;
 		tux = ux;
 		tuy = uy;
@@ -214,7 +215,6 @@ public class Basis
 		sina = sin(a);
 
 		tfz = fz * cosa + fy * sina;
-		tfy = fz * sina - fy * cosa;
 
 		tuz = uz * cosa + uy * sina;
 		tuy = uz * sina - uy * cosa;
@@ -226,7 +226,6 @@ public class Basis
 		cosa = cos(a);
 
 		tfx = tux * cosa + tuz * sina;
-		// tfz=tux*sina-tuz*cosa;
 
 		a = -atan2(tfx, tuy);
 		gl.glRotatef(-a * 180.0f / 3.141592f, 0, 0, 1);
@@ -293,17 +292,17 @@ public class Basis
 
 	private static final float cos(float angle)
 	{
-		return FloatMath.cos(angle);
+		return (float) Math.cos(angle);
 	}
 
 	private static final float sin(float angle)
 	{
-		return FloatMath.sin(angle);
+		return (float) Math.sin(angle);
 	}
 
 	private static final float sqrt(float value)
 	{
-		return FloatMath.sqrt(value);
+		return (float) Math.sqrt(value);
 	}
 
 	private static final float atan2(float x, float y)

@@ -1,14 +1,12 @@
 package ru.engine.test;
 
 import java.util.Random;
-import java.util.TooManyListenersException;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import ru.serjik.engine.BatchDrawer;
 import ru.serjik.engine.ColorTools;
 import ru.serjik.engine.EngineView;
-import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
 import ru.serjik.engine.Tile;
 import ru.serjik.engine.eng;
@@ -29,7 +27,7 @@ public class TestView extends EngineView
 	{
 		super(context);
 
-		bd = new BatchDrawer(1024 * 16);
+		bd = new BatchDrawer(4096);
 
 	}
 
@@ -54,19 +52,21 @@ public class TestView extends EngineView
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
-		
+
 		gl.glShadeModel(GL10.GL_SMOOTH);
-		
+
 		bd.blending(false);
-		bd.draw(background, 0, 0, width(), height());
-		
+
+		background.draw(bd, 0, 0, width(), height());
+
 		bd.blending(true);
 		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		float color = ColorTools.color("fff2");
 
-		for (int i = 0; i < 16 * 1024; i++)
+		for (int i = 0; i < 1 * 1024; i++)
 		{
-			bd.draw(tiles[rnd.nextInt(8)],color, rnd.nextFloat() * width(), rnd.nextFloat() * height());
+			tiles[rnd.nextInt(8)].drawScaledColored(bd, 0.5f, color, rnd.nextFloat() * width(), rnd.nextFloat()
+					* height());
 		}
 		bd.flush();
 

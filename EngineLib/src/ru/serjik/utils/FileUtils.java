@@ -16,27 +16,25 @@ public class FileUtils
 		stream.write(data.length);
 		stream.write(data.length >> 8);
 	}
-	
-	public static String[] readAllLines(InputStream stream, boolean closeStream) throws IOException
+
+	public static List<String> readAllLines(InputStream stream, boolean closeStream) throws IOException
 	{
 		List<String> lines = new ArrayList<String>();
-		
+
 		BufferedReader input = new BufferedReader(new InputStreamReader(stream));
 
 		String line = null;
-		
-		while((line = input.readLine())!=null)
+
+		while ((line = input.readLine()) != null)
 		{
 			lines.add(line);
 		}
-		
-		if(closeStream)
+
+		if (closeStream)
 		{
 			stream.close();
 		}
-		
-		String[] result = new String[lines.size()];
-		lines.toArray(result);
-		return result;
+
+		return lines;
 	}
 }
