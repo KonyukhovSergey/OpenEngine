@@ -4,16 +4,16 @@ import js.math.Vector2D;
 
 public class Location2D
 {
-	private Vector2D position = new Vector2D(0, 0);
-	private Vector2D forward = new Vector2D(1, 0);
-	private float angle = 0;
+	protected Vector2D position = new Vector2D(0, 0);
+	protected Vector2D forward = new Vector2D(1, 0);
+	protected float angle = 0;
 
 	public final Vector2D position()
 	{
 		return position;
 	}
 
-	public final void position(Vector2D position)
+	public void position(Vector2D position)
 	{
 		this.position = position;
 	}
@@ -23,7 +23,7 @@ public class Location2D
 		return forward;
 	}
 
-	public final void forward(Vector2D forward)
+	public void forward(Vector2D forward)
 	{
 		forward.normalize();
 		angle = forward.atan2();
@@ -34,23 +34,21 @@ public class Location2D
 		return angle;
 	}
 
-	public final void angle(float angle)
+	public void angle(float angle)
 	{
 		this.angle = angle;
-		forward.x = (float) Math.cos(angle);
-		forward.y = (float) Math.sin(angle);
+		forward.set((float) Math.cos(angle), (float) Math.sin(angle));
 	}
 
-	public final void move(float forward, float strafe)
+	public void move(float forward, float strafe)
 	{
 		position.plus(this.forward, forward);
 		position.plus(this.forward.y, -this.forward.x, strafe);
 	}
 
-	public final void rotate(float angle)
+	public void rotate(float angle)
 	{
 		this.angle += angle;
-
 		forward.x = (float) Math.cos(angle);
 		forward.y = (float) Math.sin(angle);
 	}
