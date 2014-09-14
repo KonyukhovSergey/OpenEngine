@@ -109,7 +109,6 @@ public class Vector2D
 			x /= length;
 			y /= length;
 		}
-
 	}
 
 	public final void scale(float scalar)
@@ -179,6 +178,11 @@ public class Vector2D
 		}
 
 		return scalar(b) / (((float) Math.sqrt(l1) * (float) Math.sqrt(l2)));
+	}
+	
+	public final float atan2()
+	{
+		return (float) Math.atan2(x, y);
 	}
 
 	@Override

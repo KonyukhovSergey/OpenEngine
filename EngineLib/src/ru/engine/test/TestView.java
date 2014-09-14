@@ -62,12 +62,21 @@ public class TestView extends EngineView
 		bd.blending(true);
 		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		float color = ColorTools.color("fff2");
+		
+		tiles[0].draw(bd, 100, 100);
+		tiles[1].draw(bd, 100, 200);
+		tiles[2].draw(bd, 100, 300);
+		tiles[3].draw(bd, 100, 400);
+		tiles[4].draw(bd, 100, 500);
+		tiles[5].draw(bd, 100, 600);
+		tiles[6].draw(bd, 100, 700);
+		tiles[7].draw(bd, 100, 800);
 
-		for (int i = 0; i < 1 * 1024; i++)
-		{
-			tiles[rnd.nextInt(8)].drawScaledColored(bd, 0.5f, color, rnd.nextFloat() * width(), rnd.nextFloat()
-					* height());
-		}
+//		for (int i = 0; i < 1 * 1024; i++)
+//		{
+//			tiles[rnd.nextInt(8)].drawScaledColored(bd, 0.5f, color, rnd.nextFloat() * width(), rnd.nextFloat()
+//					* height());
+//		}
 		bd.flush();
 
 	}

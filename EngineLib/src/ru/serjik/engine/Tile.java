@@ -103,13 +103,13 @@ public class Tile
 		this.oy = oy;
 	}
 
-	public void origin(byte horisontal, byte vertical)
+	public void align(int i, int j)
 	{
-		if (horisontal < 0)
+		if (i < 0)
 		{
 			ox = 0;
 		}
-		else if (horisontal > 0)
+		else if (i > 0)
 		{
 			ox = width;
 		}
@@ -118,11 +118,11 @@ public class Tile
 			ox = (float) width * 0.5f;
 		}
 
-		if (vertical < 0)
+		if (j < 0)
 		{
 			oy = 0;
 		}
-		else if (vertical > 0)
+		else if (j > 0)
 		{
 			oy = height;
 
@@ -241,7 +241,7 @@ public class Tile
 		for (int i = 0; i < tiles.length; i++)
 		{
 			tiles[i] = new Tile(texture, x + (i % rows) * tileWidth, y + (i / rows) * tileHeight, tileWidth, tileHeight);
-			//tiles[i].origin(0, 0);
+			tiles[i].align(0, 0);
 		}
 
 		return tiles;

@@ -15,7 +15,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		eng.am = getAssets();
-		surfaceView = new TestMeshView(this);
+		surfaceView = new TestView(this);
 		setContentView(surfaceView);
 	}
 
