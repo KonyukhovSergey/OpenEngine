@@ -4,27 +4,85 @@ import js.math.Vector2D;
 
 public class Sprite extends Location2D
 {
-	private float[] v = new float[12];
+	private float[] v = new float[8];
 	private Tile tile;
-	
+
 	public Sprite(Tile tile)
 	{
-		this.tile=tile;
+		this.tile = tile;
+		update();
 	}
-	
+
+	private final void setup(float x, float y, int i)
+	{
+		// x` = x * cos - y * sin;
+		// y` = x * sin + y * cos;
+		// cos == fwd.x
+		// sin == fwd.y
+
+		v[i + 0] = x * forward.x - y * forward.y + position.x;
+		v[i + 1] = x * forward.y + y * forward.x + position.y;
+	}
+
 	private void update()
-	{	
-		float w = tile.width;
-		float h = tile.height;
-		
-		// x` = x * sin + y * cos;
-		// y` = x * cos + y * sin;
-		
-		[0] = position.x -tile.ox + 
-		
-		
-		
+	{
+		setup(-tile.ox, -tile.oy, 0);
+		setup(tile.width - tile.ox, -tile.oy, 2);
+		setup(tile.width - tile.ox, tile.height - tile.oy, 4);
+		setup(-tile.ox, tile.height - tile.oy, 6);
 	}
 
+	public void draw(BatchDrawer bd)
+	{
+		tile.draw(bd, v);
+	}
 
+	@Override
+	public void angle(float angle)
+	{
+		super.angle(angle);
+		update();
+	}
+
+	@Override
+	public void rotate(float angle)
+	{
+		super.rotate(angle);
+		update();
+	}
+
+	@Override
+	public void forward(Vector2D forward)
+	{
+		super.forward(forward);
+		update();
+	}
+
+	public void position(float x, float y)
+	{
+		translate(x - position.x, y - position.y);
+		position.set(x, y);
+	}
+
+	@Override
+	public void move(float forward, float strafe)
+	{
+		float dx = this.forward.x * forward + this.forward.y * strafe;
+		float dy = this.forward.y * forward - this.forward.x * strafe;
+
+		translate(dx, dy);
+		position.plus(dx, dy);
+	}
+
+	private void translate(float dx, float dy)
+	{
+		v[0] += dx;
+		v[1] += dy;
+		v[2] += dx;
+		v[3] += dy;
+		v[4] += dx;
+		v[5] += dy;
+		v[6] += dx;
+		v[7] += dy;
+	}
 }

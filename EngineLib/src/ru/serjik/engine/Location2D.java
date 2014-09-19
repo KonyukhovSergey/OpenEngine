@@ -13,9 +13,9 @@ public class Location2D
 		return position;
 	}
 
-	public void position(Vector2D position)
+	protected void position(Vector2D position)
 	{
-		this.position = position;
+		this.position.set(position);
 	}
 
 	public final Vector2D forward()
@@ -49,7 +49,7 @@ public class Location2D
 	public void rotate(float angle)
 	{
 		this.angle += angle;
-		forward.x = (float) Math.cos(angle);
-		forward.y = (float) Math.sin(angle);
+		forward.x = (float) Math.cos(this.angle);
+		forward.y = (float) Math.sin(this.angle);
 	}
 }

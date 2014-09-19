@@ -93,8 +93,8 @@ public class Tile
 
 	public void draw(BatchDrawer bd, float[] v)
 	{
-		bd.draw(texture, v[0], v[1], u1, v1, v[2], v[3], u2, v1, v[4], v[5], u1, v2);
-		bd.draw(texture, v[6], v[7], u2, v2, v[8], v[9], u2, v1, v[10], v[11], u1, v2);
+		bd.draw(texture, v[0], v[1], u1, v1, v[2], v[3], u2, v1, v[4], v[5], u2, v2);
+		bd.draw(texture, v[0], v[1], u1, v1, v[4], v[5], u2, v2, v[6], v[7], u1, v2);
 	}
 
 	public void origin(float ox, float oy)

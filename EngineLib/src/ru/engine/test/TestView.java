@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 import ru.serjik.engine.BatchDrawer;
 import ru.serjik.engine.ColorTools;
 import ru.serjik.engine.EngineView;
+import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
 import ru.serjik.engine.Tile;
 import ru.serjik.engine.eng;
@@ -20,6 +21,8 @@ public class TestView extends EngineView
 	private Texture atlas;
 	private Tile[] tiles;
 	private Tile background;
+
+	private Sprite sprite;
 
 	Random rnd = new Random(SystemClock.elapsedRealtime());
 
@@ -38,6 +41,9 @@ public class TestView extends EngineView
 		tiles = Tile.split(atlas, atlas.width / 4, atlas.height / 4);
 		background = new Tile(atlas, 0, atlas.height / 2, atlas.width, atlas.height / 2);
 		Texture.enable();
+		sprite = new Sprite(tiles[0]);
+		sprite.position(310, 100);
+
 	}
 
 	@Override
@@ -62,21 +68,17 @@ public class TestView extends EngineView
 		bd.blending(true);
 		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		float color = ColorTools.color("fff2");
-		
-		tiles[0].draw(bd, 100, 100);
-		tiles[1].draw(bd, 100, 200);
-		tiles[2].draw(bd, 100, 300);
-		tiles[3].draw(bd, 100, 400);
-		tiles[4].draw(bd, 100, 500);
-		tiles[5].draw(bd, 100, 600);
-		tiles[6].draw(bd, 100, 700);
-		tiles[7].draw(bd, 100, 800);
 
-//		for (int i = 0; i < 1 * 1024; i++)
-//		{
-//			tiles[rnd.nextInt(8)].drawScaledColored(bd, 0.5f, color, rnd.nextFloat() * width(), rnd.nextFloat()
-//					* height());
-//		}
+		sprite.draw(bd);
+		sprite.move(4, 0);
+		sprite.rotate(0.05f);
+
+		// for (int i = 0; i < 1 * 1024; i++)
+		// {
+		// tiles[rnd.nextInt(8)].drawScaledColored(bd, 0.5f, color,
+		// rnd.nextFloat() * width(), rnd.nextFloat()
+		// * height());
+		// }
 		bd.flush();
 
 	}
