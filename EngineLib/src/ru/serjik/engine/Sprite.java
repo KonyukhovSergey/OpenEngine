@@ -5,9 +5,9 @@ import js.math.Vector2D;
 public class Sprite extends Location2D
 {
 	private float[] v = new float[8];
-	private Tile tile;
+	private TileBase tile;
 
-	public Sprite(Tile tile)
+	public Sprite(TileBase tile)
 	{
 		this.tile = tile;
 		update();

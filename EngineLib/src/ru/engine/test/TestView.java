@@ -10,6 +10,7 @@ import ru.serjik.engine.EngineView;
 import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
 import ru.serjik.engine.Tile;
+import ru.serjik.engine.TileBase;
 import ru.serjik.engine.eng;
 import ru.serjik.utils.BitmapUtils;
 import android.content.Context;
@@ -23,6 +24,8 @@ public class TestView extends EngineView
 	private Tile background;
 
 	private Sprite sprite;
+
+	private Sprite arrow;
 
 	Random rnd = new Random(SystemClock.elapsedRealtime());
 
@@ -41,8 +44,17 @@ public class TestView extends EngineView
 		tiles = Tile.split(atlas, atlas.width / 4, atlas.height / 4);
 		background = new Tile(atlas, 0, atlas.height / 2, atlas.width, atlas.height / 2);
 		Texture.enable();
-		sprite = new Sprite(tiles[0]);
-		sprite.position(310, 100);
+		//sprite = new Sprite(tiles[0]);
+		//sprite.position(310, 100);
+
+		{
+			Texture tex = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "sprites.png"));
+			TileBase tile = new TileBase(tex, 0.5f, 0.5f, 8.5f, 6.5f);
+			arrow = new Sprite(tile);
+			arrow.position(300, 100);
+			
+			
+		}
 
 	}
 
@@ -62,6 +74,8 @@ public class TestView extends EngineView
 		gl.glShadeModel(GL10.GL_SMOOTH);
 
 		bd.blending(false);
+		
+		bd.texture(background.texture);
 
 		background.draw(bd, 0, 0, width(), height());
 
@@ -69,9 +83,13 @@ public class TestView extends EngineView
 		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		float color = ColorTools.color("fff2");
 
-		sprite.draw(bd);
-		sprite.move(4, 0);
-		sprite.rotate(0.05f);
+//		sprite.draw(bd);
+//		sprite.move(4, 0);
+//		sprite.rotate(0.05f);
+		
+		arrow.draw(bd);
+		//arrow.move(3, 0);
+		arrow.rotate(0.05f);
 
 		// for (int i = 0; i < 1 * 1024; i++)
 		// {
