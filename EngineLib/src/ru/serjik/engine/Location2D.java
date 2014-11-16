@@ -7,6 +7,7 @@ public class Location2D
 	protected Vector2D position = new Vector2D(0, 0);
 	protected Vector2D forward = new Vector2D(1, 0);
 	protected float angle = 0;
+	protected float scale = 1;
 
 	public final Vector2D position()
 	{
@@ -34,6 +35,11 @@ public class Location2D
 		return angle;
 	}
 
+	public final float scale()
+	{
+		return scale;
+	}
+
 	public void angle(float angle)
 	{
 		this.angle = angle;
@@ -51,5 +57,10 @@ public class Location2D
 		this.angle += angle;
 		forward.x = (float) Math.cos(this.angle);
 		forward.y = (float) Math.sin(this.angle);
+	}
+
+	public void scale(float scale)
+	{
+		this.scale = scale;
 	}
 }

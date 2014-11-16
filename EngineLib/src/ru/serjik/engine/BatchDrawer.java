@@ -10,78 +10,19 @@ public class BatchDrawer
 {
 	private float[] data;
 	private FloatBuffer bb;
-
-	private Disposable texture = null;
-
-	private boolean blendingEnabled = false;
-	private int blendingSrc = 0;
-	private int blendingDst = 0;
-
-	private boolean colorEnabled = false;
-
 	private int size = 0;
+
+	public static final int TEXTURED = 1;
+	public static final int COLORED = 2;
+
+	private int mode = 0;
+
+	private static final byte[] modeVertexSizes = new byte[] { 2, 2 + 2, 3, 2 + 2 + 1 };
 
 	public BatchDrawer(int bufferSize)
 	{
 		data = new float[bufferSize];
 		bb = ByteBuffer.allocateDirect(bufferSize * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-	}
-
-	public void blending(boolean isBlendingEnabled)
-	{
-		if (this.blendingEnabled != isBlendingEnabled)
-		{
-			flush();
-
-			this.blendingEnabled = isBlendingEnabled;
-
-			if (blendingEnabled)
-			{
-				eng.gl.glEnable(GL10.GL_BLEND);
-			}
-			else
-			{
-				eng.gl.glDisable(GL10.GL_BLEND);
-			}
-		}
-	}
-
-	public void blending(int src, int dst)
-	{
-		if (blendingSrc != src || blendingDst != dst)
-		{
-			if (blendingEnabled)
-			{
-				flush();
-				eng.gl.glBlendFunc(src, dst);
-			}
-			blendingDst = dst;
-			blendingSrc = src;
-		}
-	}
-
-	public void texture(Texture texture)
-	{
-		if (this.texture != texture)
-		{
-			flush();
-
-			this.texture = texture;
-
-			if (texture != null)
-			{
-				texture.bind();
-			}
-		}
-	}
-
-	public void color(boolean enabled)
-	{
-		if (colorEnabled != enabled)
-		{
-			flush();
-			colorEnabled = enabled;
-		}
 	}
 
 	public void flush()
@@ -91,7 +32,7 @@ public class BatchDrawer
 			bb.position(0);
 			bb.put(data, 0, size);
 
-			int vertexSize = 2 + (texture != null ? 2 : 0) + (colorEnabled ? 1 : 0);
+			int vertexSize = modeVertexSizes[mode];
 
 			bb.position(0);
 			eng.gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
@@ -99,7 +40,7 @@ public class BatchDrawer
 
 			int offset = 2;
 
-			if (texture != null)
+			if ((mode & TEXTURED) > 0)
 			{
 				bb.position(offset);
 				eng.gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
@@ -111,7 +52,7 @@ public class BatchDrawer
 				eng.gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 			}
 
-			if (colorEnabled)
+			if ((mode & COLORED) > 0)
 			{
 				bb.position(offset);
 				eng.gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
@@ -120,6 +61,7 @@ public class BatchDrawer
 			else
 			{
 				eng.gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
+				eng.gl.glColor4f(1, 1, 1, 0);
 			}
 
 			eng.gl.glDrawArrays(GL10.GL_TRIANGLES, 0, size / vertexSize);
@@ -129,16 +71,15 @@ public class BatchDrawer
 		}
 	}
 
-	public void draw(Texture texture, float x1, float y1, float u1, float v1, float c1, float x2, float y2, float u2,
-			float v2, float c2, float x3, float y3, float u3, float v3, float c3)
+	public void draw(float x1, float y1, float u1, float v1, float c1, float x2, float y2, float u2, float v2,
+			float c2, float x3, float y3, float u3, float v3, float c3)
 	{
-		if (size + 15 > data.length)
+		if ((mode != (TEXTURED | COLORED)) || ((size + 15) > data.length))
 		{
 			flush();
 		}
 
-		texture(texture);
-		color(true);
+		mode = TEXTURED | COLORED;
 
 		data[size++] = x1;
 		data[size++] = y1;
@@ -159,46 +100,15 @@ public class BatchDrawer
 		data[size++] = c3;
 	}
 
-	public void draw(Texture texture, float c, float x1, float y1, float u1, float v1, float x2, float y2, float u2,
-			float v2, float x3, float y3, float u3, float v3)
+	public void draw(float x1, float y1, float u1, float v1, float x2, float y2, float u2, float v2, float x3,
+			float y3, float u3, float v3)
 	{
-		if (size + 15 > data.length)
+		if ((mode != TEXTURED) || ((size + 12) > data.length))
 		{
 			flush();
 		}
 
-		texture(texture);
-		color(true);
-
-		data[size++] = x1;
-		data[size++] = y1;
-		data[size++] = u1;
-		data[size++] = v1;
-		data[size++] = c;
-
-		data[size++] = x2;
-		data[size++] = y2;
-		data[size++] = u2;
-		data[size++] = v2;
-		data[size++] = c;
-
-		data[size++] = x3;
-		data[size++] = y3;
-		data[size++] = u3;
-		data[size++] = v3;
-		data[size++] = c;
-	}
-
-	public void draw(Texture texture, float x1, float y1, float u1, float v1, float x2, float y2, float u2, float v2,
-			float x3, float y3, float u3, float v3)
-	{
-		if (size + 12 > data.length)
-		{
-			flush();
-		}
-
-		texture(texture);
-		color(false);
+		mode = TEXTURED;
 
 		data[size++] = x1;
 		data[size++] = y1;
@@ -218,13 +128,12 @@ public class BatchDrawer
 
 	public void draw(float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3)
 	{
-		if (size + 9 > data.length)
+		if ((mode != COLORED) || ((size + 9) > data.length))
 		{
 			flush();
 		}
 
-		texture(null);
-		color(true);
+		mode = COLORED;
 
 		data[size++] = x1;
 		data[size++] = y1;
@@ -239,26 +148,4 @@ public class BatchDrawer
 		data[size++] = c3;
 	}
 
-	public void draw(float c, float x1, float y1, float x2, float y2, float x3, float y3)
-	{
-		if (size + 9 > data.length)
-		{
-			flush();
-		}
-
-		texture(null);
-		color(true);
-
-		data[size++] = x1;
-		data[size++] = y1;
-		data[size++] = c;
-
-		data[size++] = x2;
-		data[size++] = y2;
-		data[size++] = c;
-
-		data[size++] = x3;
-		data[size++] = y3;
-		data[size++] = c;
-	}
 }

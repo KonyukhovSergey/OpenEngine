@@ -20,6 +20,9 @@ public class Sprite extends Location2D
 		// cos == fwd.x
 		// sin == fwd.y
 
+		x *= scale;
+		y *= scale;
+
 		v[i + 0] = x * forward.x - y * forward.y + position.x;
 		v[i + 1] = x * forward.y + y * forward.x + position.y;
 	}
@@ -37,10 +40,21 @@ public class Sprite extends Location2D
 		tile.draw(bd, v);
 	}
 
+	public void draw(BatchDrawer bd, float color)
+	{
+		tile.draw(bd, v, color);
+	}
+
 	@Override
 	public void angle(float angle)
 	{
 		super.angle(angle);
+		update();
+	}
+
+	public void scale(float scale)
+	{
+		super.scale(scale);
 		update();
 	}
 
@@ -62,6 +76,11 @@ public class Sprite extends Location2D
 	{
 		translate(x - position.x, y - position.y);
 		position.set(x, y);
+	}
+
+	public float height()
+	{
+		return tile.height;
 	}
 
 	@Override

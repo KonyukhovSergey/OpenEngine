@@ -4,12 +4,13 @@ import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import ru.serjik.engine.AtlasGenerator;
 import ru.serjik.engine.BatchDrawer;
 import ru.serjik.engine.ColorTools;
 import ru.serjik.engine.EngineView;
 import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
-import ru.serjik.engine.Tile;
+import ru.serjik.engine.Tile_old;
 import ru.serjik.engine.TileBase;
 import ru.serjik.engine.eng;
 import ru.serjik.utils.BitmapUtils;
@@ -20,12 +21,8 @@ public class TestView extends EngineView
 {
 	private BatchDrawer bd;
 	private Texture atlas;
-	private Tile[] tiles;
-	private Tile background;
 
-	private Sprite sprite;
-
-	private Sprite arrow;
+	private Sprite background, sparkle, star;
 
 	Random rnd = new Random(SystemClock.elapsedRealtime());
 
@@ -40,63 +37,46 @@ public class TestView extends EngineView
 	@Override
 	public void onCreated(GL10 gl)
 	{
-		atlas = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "snows.png"));
-		tiles = Tile.split(atlas, atlas.width / 4, atlas.height / 4);
-		background = new Tile(atlas, 0, atlas.height / 2, atlas.width, atlas.height / 2);
-		Texture.enable();
-		//sprite = new Sprite(tiles[0]);
-		//sprite.position(310, 100);
+		AtlasGenerator ag = new AtlasGenerator(1024);
 
-		{
-			Texture tex = new Texture(BitmapUtils.loadBitmapFromAsset(eng.am, "sprites.png"));
-			TileBase tile = new TileBase(tex, 0.5f, 0.5f, 8.5f, 6.5f);
-			arrow = new Sprite(tile);
-			arrow.position(300, 100);
-			
-			
-		}
+		background = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(eng.am, "background.jpg")));
+		sparkle = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(eng.am, "sparkle.png")));
+		star = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(eng.am, "star.png")));
+
+		atlas = new Texture(ag.atlas());
+		ag.atlas().recycle();
 
 	}
 
 	@Override
 	public void onChanged(GL10 gl)
 	{
+		Texture.enable();
+		atlas.bind();
+
+		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
+		gl.glShadeModel(GL10.GL_SMOOTH);
+
+		background.position(width() / 2.0f, height() / 2.0f);
+		background.scale(height() / background.height());
 	}
 
 	@Override
 	public void onDrawFrame(GL10 gl)
 	{
-		gl.glClearColor(0, 0, 0, 0);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		// gl.glColor4f(1, 1, 1, 0);
+		gl.glDisable(GL10.GL_BLEND);
+		background.draw(bd);
+		bd.flush();
 
-		Texture.filter(GL10.GL_LINEAR, GL10.GL_LINEAR);
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
 
-		gl.glShadeModel(GL10.GL_SMOOTH);
+		sparkle.position(200, 220);
+		sparkle.draw(bd, ColorTools.color(0.1f * 1.0f, 0.1f, 0, 1));
+		sparkle.position(300, 220);
+		sparkle.draw(bd, ColorTools.GREEN_X0F0F);
 
-		bd.blending(false);
-		
-		bd.texture(background.texture);
-
-		background.draw(bd, 0, 0, width(), height());
-
-		bd.blending(true);
-		bd.blending(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-		float color = ColorTools.color("fff2");
-
-//		sprite.draw(bd);
-//		sprite.move(4, 0);
-//		sprite.rotate(0.05f);
-		
-		arrow.draw(bd);
-		//arrow.move(3, 0);
-		arrow.rotate(0.05f);
-
-		// for (int i = 0; i < 1 * 1024; i++)
-		// {
-		// tiles[rnd.nextInt(8)].drawScaledColored(bd, 0.5f, color,
-		// rnd.nextFloat() * width(), rnd.nextFloat()
-		// * height());
-		// }
 		bd.flush();
 
 	}

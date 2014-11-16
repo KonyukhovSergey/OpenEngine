@@ -2,7 +2,6 @@ package ru.engine.test;
 
 import ru.serjik.engine.eng;
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 

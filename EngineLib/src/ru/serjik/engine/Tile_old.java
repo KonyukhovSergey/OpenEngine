@@ -1,6 +1,6 @@
 package ru.serjik.engine;
 
-public class Tile
+public class Tile_old
 {
 	public Texture texture;
 	public float u1, v1, u2, v2;
@@ -9,29 +9,29 @@ public class Tile
 
 	public float color;
 
-	public Tile()
+	public Tile_old()
 	{
 
 	}
 
-	public Tile(Tile tile)
+	public Tile_old(Tile_old tile)
 	{
 		set(tile);
 	}
 
-	public Tile(Texture texture)
+	public Tile_old(Texture texture)
 	{
 		this.texture = texture;
 		set(0, 0, 1, 1);
 	}
 
-	public Tile(Texture texture, int x, int y, int width, int height)
+	public Tile_old(Texture texture, int x, int y, int width, int height)
 	{
 		this.texture = texture;
 		set(x, y, width, height);
 	}
 
-	public Tile(Texture texture, float u1, float v1, float u2, float v2)
+	public Tile_old(Texture texture, float u1, float v1, float u2, float v2)
 	{
 		this.texture = texture;
 		set(u1, v1, u2, v2);
@@ -45,8 +45,8 @@ public class Tile
 		final float x2 = x1 + width;
 		final float y2 = y1 + height;
 
-		bd.draw(texture, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
-		bd.draw(texture, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
+//		bd.draw(texture, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
+//		bd.draw(texture, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
 	}
 
 	public void drawScaled(BatchDrawer bd, float scale, float x1, float y1)
@@ -57,8 +57,8 @@ public class Tile
 		final float x2 = x1 + width * scale;
 		final float y2 = y1 + height * scale;
 
-		bd.draw(texture, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
-		bd.draw(texture, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
+//		bd.draw(texture, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
+//		bd.draw(texture, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
 	}
 
 	public void drawColored(BatchDrawer bd, float color, float x1, float y1)
@@ -69,8 +69,8 @@ public class Tile
 		final float x2 = x1 + width;
 		final float y2 = y1 + height;
 
-		bd.draw(texture, color, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
-		bd.draw(texture, color, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
+//		bd.draw(texture, color, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
+//		bd.draw(texture, color, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
 	}
 
 	public void drawScaledColored(BatchDrawer bd, float scale, float color, float x1, float y1)
@@ -81,20 +81,20 @@ public class Tile
 		final float x2 = x1 + width * scale;
 		final float y2 = y1 + height * scale;
 
-		bd.draw(texture, color, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
-		bd.draw(texture, color, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
+//		bd.draw(texture, color, x1, y1, u1, v1, x2, y1, u2, v1, x1, y2, u1, v2);
+//		bd.draw(texture, color, x2, y2, u2, v2, x1, y2, u1, v2, x2, y1, u2, v1);
 	}
 
 	public void draw(BatchDrawer bd, float left, float top, float right, float bottom)
 	{
-		bd.draw(texture, left, top, u1, v1, right, top, u2, v1, left, bottom, u1, v2);
-		bd.draw(texture, right, bottom, u2, v2, left, bottom, u1, v2, right, top, u2, v1);
+//		bd.draw(texture, left, top, u1, v1, right, top, u2, v1, left, bottom, u1, v2);
+//		bd.draw(texture, right, bottom, u2, v2, left, bottom, u1, v2, right, top, u2, v1);
 	}
 
 	public void draw(BatchDrawer bd, float[] v)
 	{
-		bd.draw(texture, v[0], v[1], u1, v1, v[2], v[3], u2, v1, v[4], v[5], u2, v2);
-		bd.draw(texture, v[0], v[1], u1, v1, v[4], v[5], u2, v2, v[6], v[7], u1, v2);
+//		bd.draw(texture, v[0], v[1], u1, v1, v[2], v[3], u2, v1, v[4], v[5], u2, v2);
+//		bd.draw(texture, v[0], v[1], u1, v1, v[4], v[5], u2, v2, v[6], v[7], u1, v2);
 	}
 
 	public void origin(float ox, float oy)
@@ -133,7 +133,7 @@ public class Tile
 		}
 	}
 
-	public void set(Tile tile)
+	public void set(Tile_old tile)
 	{
 		texture = tile.texture;
 		u1 = tile.u1;
@@ -228,7 +228,7 @@ public class Tile
 		}
 	}
 
-	public Tile[] split(int tileWidth, int tileHeight)
+	public Tile_old[] split(int tileWidth, int tileHeight)
 	{
 		int x = Math.round(u1 * texture.width);
 		int y = Math.round(v1 * texture.height);
@@ -236,20 +236,20 @@ public class Tile
 		int rows = texture.height / tileHeight;
 		int cols = texture.width / tileWidth;
 
-		Tile[] tiles = new Tile[rows * cols];
+		Tile_old[] tiles = new Tile_old[rows * cols];
 
 		for (int i = 0; i < tiles.length; i++)
 		{
-			tiles[i] = new Tile(texture, x + (i % rows) * tileWidth, y + (i / rows) * tileHeight, tileWidth, tileHeight);
+			tiles[i] = new Tile_old(texture, x + (i % rows) * tileWidth, y + (i / rows) * tileHeight, tileWidth, tileHeight);
 			tiles[i].align(0, 0);
 		}
 
 		return tiles;
 	}
 
-	public static Tile[] split(Texture texture, int tileWidth, int tileHeight)
+	public static Tile_old[] split(Texture texture, int tileWidth, int tileHeight)
 	{
-		Tile tile = new Tile(texture);
+		Tile_old tile = new Tile_old(texture);
 		return tile.split(tileWidth, tileHeight);
 	}
 }
