@@ -1,6 +1,6 @@
 package ru.engine.test;
 
-import ru.serjik.engine.eng;
+import ru.serjik.engine.EngineView;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -13,8 +13,7 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		eng.am = getAssets();
-		surfaceView = new TestView(this);
+		surfaceView = new EngineView(this, new TestRenderer(this));
 		setContentView(surfaceView);
 	}
 
