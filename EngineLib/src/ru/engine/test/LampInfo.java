@@ -5,6 +5,7 @@ import ru.serjik.engine.ColorTools;
 public class LampInfo
 {
 	public float x, y, color, size;
+	public int time = 0;
 
 	public LampInfo(String line)
 	{

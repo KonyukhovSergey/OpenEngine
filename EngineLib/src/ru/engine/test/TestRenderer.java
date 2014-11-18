@@ -1,5 +1,6 @@
 package ru.engine.test;
 
+import java.io.IOException;
 import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -11,6 +12,7 @@ import ru.serjik.engine.EngineRenderer2D;
 import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
 import ru.serjik.utils.BitmapUtils;
+import ru.serjik.utils.FileUtils;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.SystemClock;
@@ -26,6 +28,8 @@ public class TestRenderer extends EngineRenderer2D
 	private BatchDrawer bd;
 	private Texture atlas;
 	private Sprite background, sparkle, star;
+
+	private LampsSystem lampsSystem;
 
 	Random rnd = new Random(SystemClock.elapsedRealtime());
 
@@ -44,6 +48,16 @@ public class TestRenderer extends EngineRenderer2D
 		ag.atlas().recycle();
 
 		bd = new BatchDrawer(4096, gl);
+
+		try
+		{
+			lampsSystem = new LampsSystem(FileUtils.readAllLines(am.open("lamps.csv"), true));
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -70,11 +84,9 @@ public class TestRenderer extends EngineRenderer2D
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
 
-		sparkle.position(200, 220);
-		sparkle.draw(bd, ColorTools.color(0.1f * 1.0f, 0.1f, 0, 1));
-		sparkle.position(300, 220);
-		sparkle.draw(bd, ColorTools.GREEN_X0F0F);
+		lampsSystem.draw(bd, background, sparkle);
 
 		bd.flush();
+
 	}
 }
