@@ -33,6 +33,7 @@ public class TestRenderer extends EngineRenderer2D
 
 	private LampsSystem lampsSystem;
 	private SnowSystemNative ss;
+	private float offset = 0.5f;
 
 	Random rnd = new Random(SystemClock.elapsedRealtime());
 
@@ -72,16 +73,17 @@ public class TestRenderer extends EngineRenderer2D
 		Texture.filter(gl, GL10.GL_LINEAR, GL10.GL_LINEAR);
 		gl.glShadeModel(GL10.GL_SMOOTH);
 
-		background.position(width() / 2.0f, height() / 2.0f);
-		background.scale(height() > width() ? (height() / background.height()) : (width() / background.width()));
-		
 		ss = new SnowSystemNative(width(), height(), star);
-
+		background.scale(height() > width() ? (height() / background.height()) : (width() / background.width()));
 	}
 
 	@Override
 	public void draw(GL10 gl)
 	{
+		float bgsw = background.width() * background.scale();
+		float bgd = bgsw - width();
+		background.position(width() / 2.0f + (0.5f * bgd * (1 - offset * 2)), height() / 2.0f);
+
 		// gl.glColor4f(1, 1, 1, 0);
 		gl.glDisable(GL10.GL_BLEND);
 		background.draw(bd);
@@ -93,8 +95,12 @@ public class TestRenderer extends EngineRenderer2D
 		lampsSystem.draw(bd, background, sparkle);
 
 		bd.flush();
-		
-		ss.draw(gl);
 
+		ss.draw(gl);
+	}
+
+	public void offset(float value)
+	{
+		this.offset = offset;
 	}
 }
