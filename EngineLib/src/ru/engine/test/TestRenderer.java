@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import js.jni.code.NativeCalls;
+
 import ru.serjik.engine.AtlasGenerator;
 import ru.serjik.engine.BatchDrawer;
 import ru.serjik.engine.ColorTools;
@@ -30,6 +32,7 @@ public class TestRenderer extends EngineRenderer2D
 	private Sprite background, sparkle, star;
 
 	private LampsSystem lampsSystem;
+	private SnowSystemNative ss;
 
 	Random rnd = new Random(SystemClock.elapsedRealtime());
 
@@ -70,7 +73,10 @@ public class TestRenderer extends EngineRenderer2D
 		gl.glShadeModel(GL10.GL_SMOOTH);
 
 		background.position(width() / 2.0f, height() / 2.0f);
-		background.scale(height() / background.height());
+		background.scale(height() > width() ? (height() / background.height()) : (width() / background.width()));
+		
+		ss = new SnowSystemNative(width(), height(), star);
+
 	}
 
 	@Override
@@ -87,6 +93,8 @@ public class TestRenderer extends EngineRenderer2D
 		lampsSystem.draw(bd, background, sparkle);
 
 		bd.flush();
+		
+		ss.draw(gl);
 
 	}
 }
