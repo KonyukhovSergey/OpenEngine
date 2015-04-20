@@ -50,16 +50,34 @@ public:
 		y += a->y;
 	}
 
+	void plus(Vector2D &a)
+	{
+		x += a.x;
+		y += a.y;
+	}
+
 	void minus(Vector2D *a)
 	{
 		x -= a->x;
 		y -= a->y;
 	}
 
+	void minus(Vector2D &a)
+	{
+		x -= a.x;
+		y -= a.y;
+	}
+
 	void plus(Vector2D *a, float s)
 	{
 		x += a->x * s;
 		y += a->y * s;
+	}
+
+	void plus(Vector2D &a, float s)
+	{
+		x += a.x * s;
+		y += a.y * s;
 	}
 
 	float len2()
@@ -75,6 +93,11 @@ public:
 	float scalar(Vector2D *b)
 	{
 		return x * b->x + y * b->y;
+	}
+
+	float scalar(Vector2D &b)
+	{
+		return x * b.x + y * b.y;
 	}
 
 	void scale(float s)
@@ -94,8 +117,12 @@ public:
 		x = v->x;
 		y = v->y;
 	}
+
+	void set(Vector2D &v)
+	{
+		x = v.x;
+		y = v.y;
+	}
 };
-
-
 
 #endif /* VECTOR2D_H_ */

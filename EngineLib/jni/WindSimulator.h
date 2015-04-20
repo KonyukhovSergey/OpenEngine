@@ -37,27 +37,23 @@ public:
 	{
 		//force.set(0, 0);
 
-		Vector2D temp;
+		Vector2D t,d;
 
 		for (int i = 0; i < 8; i++)
 		{
-			//temp.set(&neighbours[i]->pos);
-			temp.set(&pos);
-			temp.plus(&dirs[i], cellSize);
-			temp.plus(&neighbours[i]->vel);
-			temp.minus(&pos);
-			temp.scale(-cellSize / temp.len());
-			temp.minus(&vel);
-			//temp.scale(0.125f);
-			force.plus(&temp);
-			neighbours[i]->force.minus(&temp);
+			t.set(dirs[i]);
+			t.plus(neighbours[i]->vel);
+			d.set(t);
+			d.scale(cellSize / d.len());
+			d.minus(t);
+			force.plus(&d);
+			neighbours[i]->force.minus(&d);
 		}
 	}
 
 	void tick(float dt, float viscosity)
 	{
 		vel.scale(viscosity);
-		//vel.scale(1 / (vel.len2()*0.0001f + 1));
 		vel.plus(&force, dt);
 		force.set(0, 0);
 	}
