@@ -8,6 +8,8 @@
 #ifndef VECTOR2D_H_
 #define VECTOR2D_H_
 
+#include <math.h>
+
 float interpolate(float v1, float v2, float v3, float v4, float px, float py);
 
 class Vector2D
@@ -48,10 +50,26 @@ public:
 		y += a->y;
 	}
 
+	void minus(Vector2D *a)
+	{
+		x -= a->x;
+		y -= a->y;
+	}
+
 	void plus(Vector2D *a, float s)
 	{
 		x += a->x * s;
 		y += a->y * s;
+	}
+
+	float len2()
+	{
+		return x * x + y * y;
+	}
+
+	float len()
+	{
+		return sqrt(x * x + y * y);
 	}
 
 	float scalar(Vector2D *b)
@@ -69,6 +87,12 @@ public:
 	{
 		this->x = x;
 		this->y = y;
+	}
+
+	void set(Vector2D *v)
+	{
+		x = v->x;
+		y = v->y;
 	}
 };
 

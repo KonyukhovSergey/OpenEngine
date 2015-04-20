@@ -19,6 +19,7 @@ extern float scale;
 extern float turbulence;
 extern float snowSpeed;
 
+
 class Sneginka
 {
 public:
@@ -92,10 +93,12 @@ public:
 	void tick(WindSimulator *wind)
 	{
 		float s = scale * size * snowSpeed;
+
 		pos.x += vel.x * s;
-		pos.y += vel.y * s;
-		vel.y += 0.04f;
-		wind->calcAt(&pos, &vel, turbulence);
+		pos.y += (vel.y+1.1f) * s;
+
+		//wind->calc(&pos, &vel);
+
 		vel.x *= 0.97f;
 		vel.y *= 0.97f;
 	}

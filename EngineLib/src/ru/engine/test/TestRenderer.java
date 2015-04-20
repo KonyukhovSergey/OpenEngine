@@ -5,11 +5,8 @@ import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import js.jni.code.NativeCalls;
-
 import ru.serjik.engine.AtlasGenerator;
 import ru.serjik.engine.BatchDrawer;
-import ru.serjik.engine.ColorTools;
 import ru.serjik.engine.EngineRenderer2D;
 import ru.serjik.engine.Sprite;
 import ru.serjik.engine.Texture;
@@ -44,9 +41,9 @@ public class TestRenderer extends EngineRenderer2D
 
 		AssetManager am = context.getAssets();
 
-		background = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(am, "background.jpg")));
-		sparkle = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(am, "sparkle.png")));
-		star = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(am, "star.png")));
+		background = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(am, "background.jpg"), true));
+		sparkle = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(am, "sparkle.png"), true));
+		star = new Sprite(ag.tile(BitmapUtils.loadBitmapFromAsset(am, "star.png"), true));
 
 		atlas = new Texture(ag.atlas(), gl);
 		ag.atlas().recycle();
@@ -82,7 +79,7 @@ public class TestRenderer extends EngineRenderer2D
 	{
 		float bgsw = background.width() * background.scale();
 		float bgd = bgsw - width();
-		background.position(width() / 2.0f + (0.5f * bgd * (1 - offset * 2)), height() / 2.0f);
+		background.position(width() / 2.0f + (bgd * (0.5f - offset)), height() / 2.0f);
 
 		// gl.glColor4f(1, 1, 1, 0);
 		gl.glDisable(GL10.GL_BLEND);
@@ -101,6 +98,6 @@ public class TestRenderer extends EngineRenderer2D
 
 	public void offset(float value)
 	{
-		this.offset = offset;
+		offset = value;
 	}
 }

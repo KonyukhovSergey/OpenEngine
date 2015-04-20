@@ -11,13 +11,15 @@
 #include "Sneginka.h"
 #include "Indexer.h"
 
-#define CELLS_COUNT 32
+#include <memory.h>
+
+#define CELLS_COUNT 24
 extern float scale;
 extern int snowCount;
 
 class SnowSystem
 {
-private:
+public:
 	bool isInited;
 
 	Indexer indexer;
@@ -34,7 +36,6 @@ private:
 		return (Sneginka*) item->object;
 	}
 
-public:
 	SnowSystem();
 	virtual ~SnowSystem();
 
@@ -62,10 +63,10 @@ public:
 
 		wind.init(width, height);
 
-		for (int i = 0; i < 100; i++)
-		{
-			allocate()->init(width, height);
-		}
+//		for (int i = 0; i < 100; i++)
+//		{
+//			allocate()->init(width, height);
+//		}
 
 		isInited = true;
 	}
@@ -109,9 +110,9 @@ public:
 			allocate()->init(width + border * 0.75f, 0, 0, height);
 		}
 
-		if (counter % 5 == 0)
+		//if (counter % 5 == 0)
 		{
-			wind.tick();
+			wind.tick(0.01f);
 			float v = border * 0.05f;
 			fling(rndf() * width, rndf() * height, rndf() * v - 0.5f * v, rndf() * v - 0.5f * v);
 		}
@@ -153,17 +154,18 @@ public:
 
 	void skip()
 	{
-		if (counter % snowCount == 0)
+		if (counter % 3 == 0)
 		{
-			allocate()->init(0, -border * 0.75f, width, 0);
-			allocate()->init(0, -border * 0.75f, width, 0);
-			allocate()->init(-border * 0.75f, 0, 0, height);
-			allocate()->init(width + border * 0.75f, 0, 0, height);
+			allocate()->init(0, 0, width, height*0.1f);
+			allocate()->init(0, 0, width, height*0.1f);
+			//allocate()->init(0, border * 0.75f, width, 0);
+			//allocate()->init(border * 0.75f, 0, 0, height);
+			//allocate()->init(width - border * 0.75f, 0, 0, height);
 		}
 
 		if (counter % 5 == 0)
 		{
-			wind.tick();
+//			wind.tick();
 			float v = border * 0.05f;
 			fling(rndf() * width, rndf() * height, rndf() * v - 0.5f * v, rndf() * v - 0.5f * v);
 		}
