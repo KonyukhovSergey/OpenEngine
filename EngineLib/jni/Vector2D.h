@@ -68,6 +68,12 @@ public:
 		y -= a.y;
 	}
 
+	void minus(Vector2D &a, float s)
+	{
+		x -= a.x * s;
+		y -= a.y * s;
+	}
+
 	void plus(Vector2D *a, float s)
 	{
 		x += a->x * s;

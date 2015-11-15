@@ -100,6 +100,54 @@ public:
 
 	int counter;
 
+	int draw20(float *ptr)
+	{
+		if (counter % snowCount == 0)
+		{
+			allocate()->init(0, -border * 0.75f, width, 0);
+			allocate()->init(0, -border * 0.75f, width, 0);
+			allocate()->init(-border * 0.75f, 0, 0, height);
+			allocate()->init(width + border * 0.75f, 0, 0, height);
+		}
+
+		//if (counter % 5 == 0)
+		{
+			wind.tick(0.01f);
+			float v = border * 0.05f;
+			fling(rndf() * width, rndf() * height, rndf() * v - 0.5f * v, rndf() * v - 0.5f * v);
+		}
+
+		counter++;
+
+		TwoLinkedList *item = indexer.getFirst();
+
+		int pointCount = 0;
+
+		while (item)
+		{
+			Sneginka *sneginka = (Sneginka*) item->object;
+
+			sneginka->tick(&wind);
+
+			sneginka->putTo20(ptr);
+			ptr += 16;
+
+			pointCount++;
+
+			if (sneginka->pos.y > height + border || sneginka->pos.x < -border || sneginka->pos.x > width + border
+					|| sneginka->pos.y < -border)
+			{
+				item = indexer.releaseAndGetNext(item);
+			}
+			else
+			{
+				item = item->next;
+			}
+		}
+
+		return pointCount;
+	}
+
 	int draw(float *pVertex, float *pTex, int* pColor, float *pTexBase)
 	{
 		if (counter % snowCount == 0)
@@ -132,7 +180,7 @@ public:
 			sneginka->putTo(pVertex, pColor);
 			pVertex += 12;
 			pColor += 6;
-			memcpy(pTex,pTexBase, 12 * 4);
+			memcpy(pTex, pTexBase, 12 * 4);
 
 			pTex += 12;
 
@@ -156,8 +204,8 @@ public:
 	{
 		if (counter % 3 == 0)
 		{
-			allocate()->init(0, 0, width, height*0.1f);
-			allocate()->init(0, 0, width, height*0.1f);
+			allocate()->init(0, 0, width, height * 0.1f);
+			allocate()->init(0, 0, width, height * 0.1f);
 			//allocate()->init(0, border * 0.75f, width, 0);
 			//allocate()->init(border * 0.75f, 0, 0, height);
 			//allocate()->init(width - border * 0.75f, 0, 0, height);

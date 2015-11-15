@@ -42,12 +42,14 @@ public:
 		for (int i = 0; i < 8; i++)
 		{
 			t.set(dirs[i]);
+			//t.scale(cellSize);
 			t.plus(neighbours[i]->vel);
 			d.set(t);
 			d.scale(cellSize / d.len());
 			d.minus(t);
-			force.plus(&d);
-			neighbours[i]->force.minus(&d);
+			d.minus(vel);
+			force.plus(d);
+			neighbours[i]->force.minus(d);
 		}
 	}
 
@@ -78,32 +80,32 @@ public:
 
 	void init(float width, float height)
 	{
-		float c = 32;
+		float c = 24;
 		cells = 0;
 		init(width, height, width > height ? width / c : height / c);
 	}
 
 	void init(float width, float heigth, float cellSize)
 	{
-		//dirs[0].set(-0.707107f, -0.707107f);
-		//dirs[1].set(0.0f, -1.0f);
-		//dirs[2].set(0.707107f, -0.707107f);
-		//dirs[3].set(1.0f, 0.0f);
-		//dirs[4].set(0.707107f, 0.707107f);
-		//dirs[5].set(0.0f, 1.0f);
-		//dirs[6].set(-0.707107f, 0.707107f);
-		//dirs[7].set(-1.0f, 0.0f);
+		dirs[0].set(-0.707107f, -0.707107f);
+		dirs[1].set(0.0f, -1.0f);
+		dirs[2].set(0.707107f, -0.707107f);
+		dirs[3].set(1.0f, 0.0f);
+		dirs[4].set(0.707107f, 0.707107f);
+		dirs[5].set(0.0f, 1.0f);
+		dirs[6].set(-0.707107f, 0.707107f);
+		dirs[7].set(-1.0f, 0.0f);
 
-		dirs[0].set(-1.0f, -1.0f);
-		dirs[1].set( 0.0f, -1.0f);
-		dirs[2].set( 1.0f, -1.0f);
-		dirs[3].set( 1.0f,  0.0f);
-		dirs[4].set( 1.0f,  1.0f);
-		dirs[5].set( 0.0f,  1.0f);
-		dirs[6].set(-1.0f,  1.0f);
-		dirs[7].set(-1.0f,  0.0f);
+		//dirs[0].set(-1.0f, -1.0f);
+		//dirs[1].set( 0.0f, -1.0f);
+		//dirs[2].set( 1.0f, -1.0f);
+		//dirs[3].set( 1.0f,  0.0f);
+		//dirs[4].set( 1.0f,  1.0f);
+		//dirs[5].set( 0.0f,  1.0f);
+		//dirs[6].set(-1.0f,  1.0f);
+		//dirs[7].set(-1.0f,  0.0f);
 
-		//for (int i = 0; i < 8; i++)	{ dirs[i].scale(cellSize); }
+		for (int i = 0; i < 8; i++)	{ dirs[i].scale(cellSize); }
 
 		widthCount = (int)(width / cellSize) + 1 + 2 * borderCount;
 		heigthCount = (int)(heigth / cellSize) + 1 + 2 * borderCount;
@@ -145,7 +147,7 @@ public:
 
 	void tick(float dt)
 	{
-		float viscosity = powf(0.99f, dt);
+		float viscosity = powf(0.999f, dt);
 
 		for (int i = 0; i < cellsCount; i++)
 		{
@@ -161,7 +163,7 @@ public:
 	void fling(float x, float y, float dx, float dy)
 	{
 		WindCell *cell = cellAt(x, y);
-		cell->vel.plus(dx, dy);
+		cell->force.set(dx, dy);
 	}
 
 	WindCell* cellAt(float x, float y)

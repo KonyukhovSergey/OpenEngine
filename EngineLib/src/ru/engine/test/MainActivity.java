@@ -13,7 +13,7 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		surfaceView = new EngineView(this, new TestRenderer(this));
+		surfaceView = new EngineView( this, new TestRenderer(this));
 		setContentView(surfaceView);
 	}
 

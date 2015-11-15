@@ -19,7 +19,6 @@ extern float scale;
 extern float turbulence;
 extern float snowSpeed;
 
-
 class Sneginka
 {
 public:
@@ -39,6 +38,28 @@ public:
 		pos.set(rndf() * width + left, rndf() * height + top);
 		vel.set(0, 0);
 		size = (rndf() * 90.0f + 10.0f) * scale;
+	}
+
+	void putTo20(float *ptr)
+	{
+		float x = pos.x;
+		float y = pos.y;
+		float s = size * 0.2f;
+
+		unsigned int ca = ((unsigned int) (255.0f * ((1.0f - (size - 10.0f) / 800.0f))));
+		unsigned int c = ca << 16 | ca << 8 | ca | ca << 24;
+
+		*ptr = x;
+		ptr++;
+
+		*ptr = y;
+		ptr++;
+
+		*ptr = s;
+		ptr++;
+
+
+		*(int*) ptr = c;
 	}
 
 	void putTo(float *pVertex, int *pColor)
@@ -95,7 +116,7 @@ public:
 		float s = scale * size * snowSpeed;
 
 		pos.x += vel.x * s;
-		pos.y += (vel.y+1.1f) * s;
+		pos.y += (vel.y + 1.1f) * s;
 
 		//wind->calc(&pos, &vel);
 
